@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased (DeepSeek cache edition)
+
+### Changed
+
+- **DeepSeek requests keep a stable start, so most input bills at the cache-hit price**: DeepSeek bills input that repeats the start of a recent request at about a tenth of the normal price. On DeepSeek endpoints the system prompt is now frozen per chat and rebuilt only when the mode, approval mode, reply settings, pinned instructions or workspace change, instead of every round. The parts that change every round (the live environment, the task list, image inventory and hook instructions) go in a short `<runtime_context>` note at the end of the request, joined to the last user message and never saved to the chat. Older tool results are no longer trimmed as they age, which rewrote the middle of the history every round; automatic compaction still runs when the context nears the model's window. App notes such as compaction summaries stay where they were recorded instead of being folded into the system prompt. Memory recall and the repository map are captured when the chat's prompt is built; the agent fetches fresh ones with its memory and file tools. Other providers are unchanged.
+
 ## 4.1 (2026-11-25)
 
 ### Added

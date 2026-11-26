@@ -176,7 +176,10 @@ class OpenAiCompatProvider(
             val normalized = CompatHistory.normalize(messages).map {
                 com.androidharness.app.tools.ImageInspectionDelivery.update(it, it.imageData)
             }
-            val systemNotes = normalized
+            // Prefix-caching endpoints keep those notes where they were recorded instead: folding a new
+            // note into the leading prompt would change the start of every later request.
+            val prefixStable = PromptCachePolicy.prefixStable(config.baseUrl)
+            val systemNotes = if (prefixStable) emptyList() else normalized
                 .filter { it.role == Role.SYSTEM }
                 .mapNotNull { it.text.takeIf { text -> text.isNotBlank() } }
             val fullSystemPrompt = if (systemNotes.isEmpty()) systemPrompt
@@ -185,7 +188,7 @@ class OpenAiCompatProvider(
                     append("\n\n[Notes recorded by the app earlier in this conversation]\n")
                     append(systemNotes.joinToString("\n\n"))
                 }
-            val history = normalized.filter { it.role != Role.SYSTEM }
+            val history = if (prefixStable) CompatHistory.notesInPlace(normalized) else normalized.filter { it.role != Role.SYSTEM }
             putJsonArray("messages") {
                 if ("openrouter.ai" in host && (config.model.contains("claude", true) || config.model.contains("anthropic", true))) {
                     add(buildJsonObject {

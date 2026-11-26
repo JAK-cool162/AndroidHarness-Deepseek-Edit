@@ -38,4 +38,26 @@ internal object CompatHistory {
         }
         return out
     }
+
+    /**
+     * Turn app notes (compaction summaries, run notices) into user-role notes at the position they
+     * were recorded, joining a note into a neighbouring text-only user message so roles keep
+     * alternating. Deterministic for an append-only history, so the request start never changes.
+     */
+    fun notesInPlace(messages: List<ChatMessage>): List<ChatMessage> {
+        val out = mutableListOf<ChatMessage>()
+        for (m in messages) {
+            val next = if (m.role == Role.SYSTEM) {
+                if (m.text.isBlank()) continue
+                m.copy(role = Role.USER, text = "[Note recorded by the app at this point in the conversation]\n${m.text}")
+            } else m
+            val last = out.lastOrNull()
+            if (next.role == Role.USER && last != null && last.role == Role.USER && textOnly(last) && textOnly(next)) {
+                out[out.size - 1] = last.copy(text = last.text + "\n\n" + next.text)
+            } else out += next
+        }
+        return out
+    }
+
+    private fun textOnly(m: ChatMessage): Boolean = m.toolCalls.isEmpty() && m.toolCallId == null && m.imageData.isEmpty()
 }

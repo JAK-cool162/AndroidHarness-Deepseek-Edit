@@ -12,4 +12,14 @@ internal object PromptCachePolicy {
         "api.openai.com", "openrouter.ai" -> true
         else -> false
     }
+
+    /**
+     * Whether requests to this endpoint keep a byte-stable prefix: a frozen system prompt,
+     * untrimmed history, and per-request context appended at the end. DeepSeek bills input
+     * tokens that repeat the start of a recent request at its much cheaper cache-hit price
+     * (https://api-docs.deepseek.com/guides/kv_cache), so any change near the start of a
+     * request re-bills the whole conversation at the full price.
+     */
+    fun prefixStable(baseUrl: String): Boolean =
+        baseUrl.toHttpUrlOrNull()?.host?.let { it == "deepseek.com" || it.endsWith(".deepseek.com") } == true
 }

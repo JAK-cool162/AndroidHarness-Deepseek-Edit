@@ -291,6 +291,13 @@ class AgentEngine(
 
     /** The memory budget each session's last run used, so context estimates match what is sent. */
     private val memoryBudgets = java.util.concurrent.ConcurrentHashMap<String, Int>()
+
+    /**
+     * Per-session frozen system prompts for prefix-caching endpoints, keyed by the inputs that
+     * may change them: rebuilding only when one of these changes keeps every request's start
+     * byte-identical, which is what the provider's prompt cache bills cheaply.
+     */
+    private val stablePrompts = java.util.concurrent.ConcurrentHashMap<String, Pair<String, String>>()
     private val memoryToolNames = com.androidharness.app.data.MemoryRepository.toolNames +
         setOf("memory_write", "memory_read", "memory_search")
 
@@ -403,13 +410,23 @@ class AgentEngine(
         // A run rebuilds the prompt for every request; a memory counts as used once per user message, not per request.
         var countedMemoryQuery: String? = null
         fun countMemoryUse(): Boolean = (memoryQuery != countedMemoryQuery).also { countedMemoryQuery = memoryQuery }
-        suspend fun runSystemPrompt(fullAccess: Boolean): String =
+        val prefixStable = com.androidharness.app.llm.PromptCachePolicy.prefixStable(config.baseUrl)
+        suspend fun buildSystemPrompt(fullAccess: Boolean): String =
             if (!agentContextEnabled) "" else if (conversation.isChat) chatSystemPrompt(sessionId, searchDepth, conversation, chatImageFrequency, chatInstructions, memoryQuery,
                 memoryChars = memoryChars(), countMemoryUse = countMemoryUse()) { memories ->
                 suppliedMemories = memories.map { com.androidharness.app.core.SuppliedMemory(it.id, it.text) }
             } else systemPrompt(workspace, mode, fullAccess = fullAccess, repoMapEnabled = repoMapEnabled, sessionId = sessionId, memoryQuery = memoryQuery, memoryAllowed = conversation.personalizationEnabled,
                 memoryChars = memoryChars(), countMemoryUse = countMemoryUse()) +
                 (if (pinnedInstructions.isBlank()) "" else "\n\nPinned user instructions:\n$pinnedInstructions") + startNotes
+        // Prefix-caching endpoints get the session's frozen prompt while its inputs are unchanged;
+        // memory recall and the repository map stay as first captured, and tools fetch fresh ones.
+        suspend fun runSystemPrompt(fullAccess: Boolean): String {
+            if (!prefixStable || sessionId == null) return buildSystemPrompt(fullAccess)
+            val key = listOf(fullAccess, mode, conversation.isChat, agentContextEnabled, replySettings, pinnedInstructions, startNotes,
+                workspace.displayPath, repoMapEnabled).joinToString("\u0000")
+            stablePrompts[sessionId]?.takeIf { it.first == key }?.let { return it.second }
+            return buildSystemPrompt(fullAccess).also { stablePrompts[sessionId] = key to it }
+        }
         var systemPrompt = runSystemPrompt(false)
         var promptSandboxOff = false
         val memoryOn = universalMemory?.isEnabled(sessionId) == true && conversation.personalizationEnabled
@@ -493,9 +510,12 @@ class AgentEngine(
             // tool results and before the next request, so nothing in flight
             // is interrupted and the cached prefix stays unchanged.
             if (iterations > 1) takeSteering()
-            val shrunk = ContextHygiene.shrinkToolResults(working)
-            working.clear()
-            working.addAll(shrunk)
+            // Trimming a result as it ages edits the middle of the history and re-bills everything after it.
+            if (!prefixStable) {
+                val shrunk = ContextHygiene.shrinkToolResults(working)
+                working.clear()
+                working.addAll(shrunk)
+            }
 
             // Read once per round, so a mid-run mode switch applies here;
             // Full access additionally lifts every sandbox layer for the
@@ -526,6 +546,9 @@ class AgentEngine(
             var roundRegistry = round.registry
             var tools = round.tools
             var requestSystemPrompt = round.systemPrompt
+            var requestTail = round.tail
+            // What this round actually sends: the history, with the tail merged into its end.
+            fun requestMessages(): List<ChatMessage> = withRequestTail(working, requestTail)
             val bufferKey = round.bufferKey
             val textWrites = round.textWrites
             if (agentContextEnabled) {
@@ -533,8 +556,9 @@ class AgentEngine(
                     put("agent", runContext.agent); put("iteration", iterations)
                 }) else com.androidharness.app.config.HookResult()
                 earlyNotices.forEach { emit(AgentEvent.Notice(it)) }; earlyNotices.clear()
-                requestSystemPrompt += runContext.drainInstructions().let { if (it.isBlank()) "" else "\n\n$it" } +
+                val instructions = runContext.drainInstructions().let { if (it.isBlank()) "" else "\n\n$it" } +
                     before.instructions.let { if (it.isBlank()) "" else "\n\n$it" }
+                if (prefixStable) requestTail = (requestTail + instructions).trim() else requestSystemPrompt += instructions
             }
             runContext.stopRequested.get()?.let { reason ->
                 emit(AgentEvent.Notice("A plugin hook stopped the run: $reason"))
@@ -542,7 +566,7 @@ class AgentEngine(
                 break
             }
             // Auto-compact before the request grows past the context budget.
-            val estimate = estimateContext(working, requestSystemPrompt, tools, withBreakdown = true)
+            val estimate = estimateContext(requestMessages(), requestSystemPrompt, tools, withBreakdown = true)
             emit(AgentEvent.EstimatedContext(estimate))
             val autoCompactSetting = if (conversation.isChat) 0 else autoCompactTokens()
             val compactThreshold = budget.recovery.scaled(if (conversation.isChat) ChatContextPolicy.compactAt(budget.limit, requestOptions.maxOutputTokens)
@@ -567,9 +591,9 @@ class AgentEngine(
                     working.addAll(compacted)
                     // The window just shrank: refresh the context panel now
                     // instead of waiting for the next request's usage row.
-                    emit(AgentEvent.EstimatedContext(estimateContext(working, requestSystemPrompt, tools, withBreakdown = true)))
+                    emit(AgentEvent.EstimatedContext(estimateContext(requestMessages(), requestSystemPrompt, tools, withBreakdown = true)))
                 }
-                if (conversation.isChat && estimateContext(working, requestSystemPrompt, tools).total >= compactThreshold) {
+                if (conversation.isChat && estimateContext(requestMessages(), requestSystemPrompt, tools).total >= compactThreshold) {
                     emit(AgentEvent.Error("The latest message is too large for the available context. Shorten it or choose a model with a larger context."))
                     break
                 }
@@ -735,7 +759,7 @@ class AgentEngine(
             suspend fun requestRound(allowRetries: Boolean) = StreamRetrier.run(
                 streamFor = {
                     publishSide()
-                    provider.streamChat(config, apiKey, requestSystemPrompt, working, tools, requestOptions)
+                    provider.streamChat(config, apiKey, requestSystemPrompt, requestMessages(), tools, requestOptions)
                 },
                 onAttemptStart = {
                     codeTracker.clear()
@@ -955,13 +979,17 @@ class AgentEngine(
         }
     }
 
-    /** What one model request sends: the tools it may call and the system prompt it carries. */
+    /**
+     * What one model request sends: the tools it may call, the system prompt it carries, and,
+     * for prefix-caching endpoints, the per-request context that goes at the end instead.
+     */
     private class RoundRequest(
         val registry: ToolRegistry,
         val tools: List<com.androidharness.app.llm.ToolSchema>,
         val systemPrompt: String,
         val bufferKey: String,
         val textWrites: Boolean,
+        val tail: String = "",
     )
 
     /** The subagent and storage card switches in Settings remove their tools. */
@@ -1006,11 +1034,16 @@ class AgentEngine(
         turnImages.update(working)
         val imageInventory = if (conversation.isChat && visionAvailable)
             com.androidharness.app.tools.ChatImageInventory.promptSources(turnImages.sources(), imageStore::metadata) else ""
-        var requestSystemPrompt = if (!agentContextEnabled) "" else if (conversation.isChat) systemPrompt + environment + imageInventory else com.androidharness.app.caveman.CavemanPolicy.apply(
-            systemPrompt + environment + TodoPrompt.format(
-                todoStore?.takeIf { !conversation.isChat && it.owner.value == sessionId }?.todos?.value.orEmpty(),
-                roundsWithoutTodoUpdate,
-            ).let { if (it.isBlank()) "" else "\n\n$it" },
+        val todos = if (conversation.isChat) "" else TodoPrompt.format(
+            todoStore?.takeIf { it.owner.value == sessionId }?.todos?.value.orEmpty(),
+            roundsWithoutTodoUpdate,
+        ).let { if (it.isBlank()) "" else "\n\n$it" }
+        // Prefix-caching endpoints keep the system prompt fixed; what changes every round goes in the tail.
+        val prefixStable = com.androidharness.app.llm.PromptCachePolicy.prefixStable(config.baseUrl)
+        val perRequest = if (!agentContextEnabled) "" else environment + imageInventory + todos
+        val leading = if (prefixStable) systemPrompt else systemPrompt + perRequest
+        var requestSystemPrompt = if (!agentContextEnabled) "" else if (conversation.isChat) leading else com.androidharness.app.caveman.CavemanPolicy.apply(
+            leading,
             installed = settings.cavemanInstalled,
             intensity = settings.cavemanIntensity,
             wenyan = settings.cavemanWenyan,
@@ -1022,7 +1055,7 @@ class AgentEngine(
             (bufferKey in settings.bufferedToolCallModels || TextFileWrites.buffersToolCalls(config.baseUrl)) &&
             tools.any { it.name == "write_file" }
         if (textWrites) requestSystemPrompt += TextFileWrites.prompt()
-        return RoundRequest(roundRegistry, tools, requestSystemPrompt, bufferKey, textWrites)
+        return RoundRequest(roundRegistry, tools, requestSystemPrompt, bufferKey, textWrites, if (prefixStable) perRequest.trim() else "")
     }
 
     /** Where a research turn spends its time: one line per model round. */
@@ -2878,6 +2911,19 @@ ${if (appSettings.subagentsEnabled) "- For broad exploration whose raw output wo
     }
 
     companion object {
+        /**
+         * The request view of a history with per-request context appended at its end. The context
+         * joins the final user message when there is one, so roles keep alternating; otherwise it is
+         * its own user message after the latest tool results. The saved history never carries it.
+         */
+        internal fun withRequestTail(history: List<ChatMessage>, tail: String): List<ChatMessage> {
+            if (tail.isBlank()) return history
+            val note = "<runtime_context>\nRefreshed by the app for this request; not written by the user.\n$tail\n</runtime_context>"
+            val last = history.lastOrNull()
+            return if (last != null && last.role == Role.USER && last.toolCalls.isEmpty())
+                history.dropLast(1) + last.copy(text = if (last.text.isBlank()) note else last.text + "\n\n" + note)
+            else history + ChatMessage(role = Role.USER, text = note)
+        }
         private val PARALLEL_READ_EXCLUSIONS = setOf("ask_user", "browser_wait_for", "create_artifact", "subagent_wait", "subagent_stop")
 
         /** Everything that starts or controls a subagent. The Sub-Agent switch removes all of it. */
