@@ -42,6 +42,30 @@ jobs:
       - name: Install Vulkan shader compiler
         run: sudo apt-get update && sudo apt-get install -y glslc
 
+      # One signing key for every branch build, so a new APK installs over the previous one.
+      # The key lives only in this repository's Actions cache; app/build.gradle.kts signs with
+      # signing-keys/debug.keystore when it exists.
+      - name: Restore signing key
+        id: signing-key
+        uses: actions/cache/restore@v4
+        with:
+          path: signing-keys/debug.keystore
+          key: branch-signing-key-v1
+
+      - name: Create signing key
+        if: steps.signing-key.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p signing-keys
+          keytool -genkeypair -v -keystore signing-keys/debug.keystore -storepass android -keypass android \
+            -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
+      - name: Save signing key
+        if: steps.signing-key.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: signing-keys/debug.keystore
+          key: branch-signing-key-v1
+
       - name: Run unit tests
         run: ./gradlew :app:testDebugUnitTest --no-daemon --stacktrace
 
