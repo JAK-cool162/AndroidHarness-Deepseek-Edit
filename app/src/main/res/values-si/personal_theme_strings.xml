@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">ඔබේ සංවාද, ඔබේ Canvas.</string>
     <string name="theme_canvas_preview_reply">ඔබට සැපපහසු වන ලෙස සිටින්න.</string>
     <string name="theme_canvas_color_area">වර්ණ ප්‍රදේශය</string>
+    <string name="theme_canvas_blur">පසුබිම් බොඳ කිරීම</string>
+    <string name="theme_canvas_blur_hint">ඔබේ කතාබස් පිටුපස ඇති රූපය හෝ GIF මෘදු කරන්න.</string>
+    <string name="theme_canvas_blur_unsupported">බොඳ කිරීමට Android 12 හෝ නවතම අනුවාදයක් අවශ්‍යයි.</string>
 </resources>

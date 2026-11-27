@@ -36,6 +36,7 @@ internal fun HarnessCanvasSection(settings: HarnessCanvasSettings, repository: S
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf(false) }
     var dim by remember(settings.dim, settings.imageId) { mutableFloatStateOf(settings.dim.coerceIn(0f, 1f)) }
+    var blur by remember(settings.blur, settings.imageId) { mutableFloatStateOf(settings.blur.takeIf { it.isFinite() }?.coerceIn(0f, 1f) ?: 0f) }
     val hasImage = HarnessCanvasStore.image(context, settings.imageId) != null
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) scope.launch {
@@ -52,7 +53,7 @@ internal fun HarnessCanvasSection(settings: HarnessCanvasSettings, repository: S
             }
             if (hasImage) {
                 Surface(shape = RoundedCornerShape(24.dp)) {
-                    HarnessCanvasBackdrop(settings.copy(enabled = true, chat = true, dim = dim), true, Modifier.fillMaxWidth().height(220.dp)) {
+                    HarnessCanvasBackdrop(settings.copy(enabled = true, chat = true, dim = dim, blur = blur), true, Modifier.fillMaxWidth().height(220.dp)) {
                         Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Bottom)) {
                             Surface(shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.secondaryContainer) {
                                 Text(stringResource(R.string.theme_canvas_preview_message), Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
@@ -79,6 +80,18 @@ internal fun HarnessCanvasSection(settings: HarnessCanvasSettings, repository: S
                     Text(stringResource(R.string.theme_canvas_dim_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Slider(dim, { dim = it }, onValueChangeFinished = { scope.launch { repository.updateHarnessCanvas { it.copy(dim = dim) } } },
                         enabled = !busy, modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = dimLabel })
+                }
+                val blurLabel = stringResource(R.string.theme_canvas_blur)
+                Column {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(blurLabel, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                        Text("${(blur * 100).toInt()}%", style = MaterialTheme.typography.labelLarge)
+                    }
+                    Text(stringResource(if (android.os.Build.VERSION.SDK_INT >= 31) R.string.theme_canvas_blur_hint else R.string.theme_canvas_blur_unsupported),
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Slider(blur, { blur = it }, onValueChangeFinished = { scope.launch { repository.updateHarnessCanvas { it.copy(blur = blur) } } },
+                        enabled = !busy && android.os.Build.VERSION.SDK_INT >= 31,
+                        modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = blurLabel })
                 }
                 CanvasSwitch(stringResource(R.string.theme_canvas_colors), stringResource(R.string.theme_canvas_colors_hint), settings.adaptColors, !busy) { value ->
                     scope.launch { repository.updateHarnessCanvas { it.copy(adaptColors = value) } }

@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"உங்கள் உரையாடல்கள், உங்கள் கேன்வாஸ்."</string>
     <string name="theme_canvas_preview_reply">"உங்களை வீட்டில் செய்யுங்கள்."</string>
     <string name="theme_canvas_color_area">"வண்ண பகுதி"</string>
+    <string name="theme_canvas_blur">பின்னணி மங்கல்</string>
+    <string name="theme_canvas_blur_hint">உங்கள் அரட்டைகளின் பின்னால் உள்ள படம் அல்லது GIF-ஐ மென்மையாக்குங்கள்.</string>
+    <string name="theme_canvas_blur_unsupported">மங்கலுக்கு Android 12 அல்லது புதியது தேவை.</string>
 </resources>

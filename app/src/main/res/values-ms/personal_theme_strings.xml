@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"Perbualan anda, Kanvas anda."</string>
     <string name="theme_canvas_preview_reply">"Buat sendiri di rumah."</string>
     <string name="theme_canvas_color_area">"Kawasan warna"</string>
+    <string name="theme_canvas_blur">Kabur latar belakang</string>
+    <string name="theme_canvas_blur_hint">Lembutkan imej atau GIF di belakang sembang anda.</string>
+    <string name="theme_canvas_blur_unsupported">Kabur memerlukan Android 12 atau lebih baharu.</string>
 </resources>

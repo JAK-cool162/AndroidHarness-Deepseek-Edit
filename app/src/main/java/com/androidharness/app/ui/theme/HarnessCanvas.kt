@@ -1,6 +1,20 @@
 package com.androidharness.app.ui.theme
 
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.widget.ImageView
+import androidx.annotation.RequiresApi
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import java.io.File
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,13 +69,41 @@ internal fun HarnessCanvasBackdrop(
     }
     Box(modifier.background(MaterialTheme.colorScheme.surface)) {
         Box(Modifier.matchParentSize().recordHarnessGlassScene(wallpaperBackdrop)) {
-        Crossfade(bitmap, modifier = Modifier.fillMaxSize(), animationSpec = defaultEffectsSpec(), label = "Harness Canvas") { image ->
-            if (image != null) Image(image, null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop,
-                alpha = 1f - settings.dim.takeIf { it.isFinite() }.let { (it ?: .65f).coerceIn(0f, 1f) })
+        val alpha = 1f - settings.dim.takeIf { it.isFinite() }.let { (it ?: .65f).coerceIn(0f, 1f) }
+        val blurDp = MAX_CANVAS_BLUR_DP * settings.blur.takeIf { it.isFinite() }.let { (it ?: 0f).coerceIn(0f, 1f) }
+        val animated = file?.takeIf { visible && Build.VERSION.SDK_INT >= 28 && it.extension in setOf("gif", "webp") }
+        if (animated != null && Build.VERSION.SDK_INT >= 28) AnimatedCanvasImage(animated, alpha, blurDp)
+        else Crossfade(bitmap, modifier = Modifier.fillMaxSize(), animationSpec = defaultEffectsSpec(), label = "Harness Canvas") { image ->
+            if (image != null) Image(image, null, Modifier.fillMaxSize().blur(blurDp.dp, BlurredEdgeTreatment.Rectangle),
+                contentScale = ContentScale.Crop, alpha = alpha)
         }
         }
         CompositionLocalProvider(LocalHarnessCanvasVisible provides (visible && bitmap != null),
             LocalHarnessGlassBackdrop provides (combinedBackdrop ?: parentBackdrop)) { content() }
+    }
+}
+
+/** Blur radius at the slider's maximum. */
+private const val MAX_CANVAS_BLUR_DP = 24f
+
+/** Plays an animated GIF or WebP background, cropped to fill, with the same dimming and blur as a still. */
+@RequiresApi(28)
+@Composable
+private fun AnimatedCanvasImage(file: File, alpha: Float, blurDp: Float) {
+    val drawable by produceState<Drawable?>(null, file.path, file.lastModified()) {
+        value = withContext(Dispatchers.IO) { runCatching { ImageDecoder.decodeDrawable(ImageDecoder.createSource(file)) }.getOrNull() }
+    }
+    val image = drawable ?: return
+    DisposableEffect(image) {
+        (image as? AnimatedImageDrawable)?.apply { repeatCount = AnimatedImageDrawable.REPEAT_INFINITE; start() }
+        onDispose { (image as? AnimatedImageDrawable)?.stop() }
+    }
+    val blurPx = with(LocalDensity.current) { blurDp.dp.toPx() }
+    AndroidView({ ImageView(it).apply { scaleType = ImageView.ScaleType.CENTER_CROP } }, Modifier.fillMaxSize()) { view ->
+        if (view.drawable !== image) view.setImageDrawable(image)
+        view.alpha = alpha
+        if (Build.VERSION.SDK_INT >= 31) view.setRenderEffect(
+            if (blurPx > 0f) RenderEffect.createBlurEffect(blurPx, blurPx, Shader.TileMode.CLAMP) else null)
     }
 }
 

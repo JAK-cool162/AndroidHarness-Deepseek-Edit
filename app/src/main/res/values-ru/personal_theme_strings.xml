@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">Ваши разговоры, ваш Canvas.</string>
     <string name="theme_canvas_preview_reply">Будьте как дома.</string>
     <string name="theme_canvas_color_area">Область цвета</string>
+    <string name="theme_canvas_blur">Размытие фона</string>
+    <string name="theme_canvas_blur_hint">Смягчите изображение или GIF за вашими чатами.</string>
+    <string name="theme_canvas_blur_unsupported">Для размытия нужен Android 12 или новее.</string>
 </resources>

@@ -29,11 +29,14 @@
     <string name="theme_canvas_code">Code</string>
     <string name="theme_canvas_dim">Image dimming</string>
     <string name="theme_canvas_dim_hint">Fade the image into your theme for clearer text.</string>
+    <string name="theme_canvas_blur">Background blur</string>
+    <string name="theme_canvas_blur_hint">Soften the image or GIF behind your chats.</string>
+    <string name="theme_canvas_blur_unsupported">Blur needs Android 12 or newer.</string>
     <string name="theme_canvas_colors">Match Canvas colors</string>
     <string name="theme_canvas_colors_hint">Build your app’s color palette from this image.</string>
     <string name="theme_canvas_working">Preparing your Canvas…</string>
     <string name="theme_canvas_error">Couldn’t use that image. Try another photo under 32 MB.</string>
-    <string name="theme_canvas_empty">Add a photo or artwork to make this space yours.</string>
+    <string name="theme_canvas_empty">Add a photo, artwork or animated GIF to make this space yours.</string>
     <string name="theme_canvas_preview_message">Your conversations, your Canvas.</string>
     <string name="theme_canvas_preview_reply">Make yourself at home.</string>
     <string name="theme_canvas_color_area">Color area</string>

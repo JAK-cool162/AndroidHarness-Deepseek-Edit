@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">Deine Gespräche, dein Canvas.</string>
     <string name="theme_canvas_preview_reply">Mach es dir gemütlich.</string>
     <string name="theme_canvas_color_area">Farbbereich</string>
+    <string name="theme_canvas_blur">Hintergrundunschärfe</string>
+    <string name="theme_canvas_blur_hint">Zeichne das Bild oder GIF hinter deinen Chats weich.</string>
+    <string name="theme_canvas_blur_unsupported">Unschärfe benötigt Android 12 oder neuer.</string>
 </resources>

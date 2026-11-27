@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">Percakapan Anda, Canvas Anda.</string>
     <string name="theme_canvas_preview_reply">Anggap saja rumah sendiri.</string>
     <string name="theme_canvas_color_area">Area warna</string>
+    <string name="theme_canvas_blur">Buram latar belakang</string>
+    <string name="theme_canvas_blur_hint">Lembutkan gambar atau GIF di balik chat Anda.</string>
+    <string name="theme_canvas_blur_unsupported">Buram memerlukan Android 12 atau yang lebih baru.</string>
 </resources>

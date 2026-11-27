@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"आपकी बातचीत, आपका कैनवास।"</string>
     <string name="theme_canvas_preview_reply">"अपने आप को घर पर बनाओ."</string>
     <string name="theme_canvas_color_area">"रंग क्षेत्र"</string>
+    <string name="theme_canvas_blur">पृष्ठभूमि धुंधलापन</string>
+    <string name="theme_canvas_blur_hint">अपनी चैट के पीछे की छवि या GIF को नरम करें।</string>
+    <string name="theme_canvas_blur_unsupported">धुंधलापन के लिए Android 12 या नया संस्करण चाहिए।</string>
 </resources>

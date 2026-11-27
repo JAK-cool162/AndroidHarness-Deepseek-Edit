@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">گفتگوهای شما، Canvas شما.</string>
     <string name="theme_canvas_preview_reply">خودتان را راحت کنید.</string>
     <string name="theme_canvas_color_area">ناحیه رنگ</string>
+    <string name="theme_canvas_blur">محوشدگی پس‌زمینه</string>
+    <string name="theme_canvas_blur_hint">تصویر یا GIF پشت گفتگوهایتان را نرم کنید.</string>
+    <string name="theme_canvas_blur_unsupported">محوشدگی به Android 12 یا جدیدتر نیاز دارد.</string>
 </resources>

@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"Vos conversations, votre Canvas."</string>
     <string name="theme_canvas_preview_reply">"Faites comme chez vous."</string>
     <string name="theme_canvas_color_area">"Zone de couleur"</string>
+    <string name="theme_canvas_blur">Flou de l’arrière-plan</string>
+    <string name="theme_canvas_blur_hint">Adoucissez l’image ou le GIF derrière vos discussions.</string>
+    <string name="theme_canvas_blur_unsupported">Le flou nécessite Android 12 ou une version ultérieure.</string>
 </resources>

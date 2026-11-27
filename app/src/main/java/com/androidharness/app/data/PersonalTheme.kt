@@ -14,7 +14,7 @@ data class CustomThemePalette(
 internal fun CustomThemePalette.valid(): Boolean = id.length in 1..100 && name.isNotBlank() && name.length <= 40 &&
     listOfNotNull(primary, secondary, tertiary).all { it in 0xFF000000..0xFFFFFFFF }
 
-internal val canvasImageIdPattern = Regex("canvas-[a-fA-F0-9-]{36}\\.(jpg|png)")
+internal val canvasImageIdPattern = Regex("canvas-[a-fA-F0-9-]{36}\\.(jpg|png|gif|webp)")
 
 @Serializable
 data class HarnessCanvasSettings(
@@ -24,6 +24,8 @@ data class HarnessCanvasSettings(
     val chat: Boolean = true,
     val code: Boolean = true,
     val dim: Float = .65f,
+    /** Background blur, 0 (sharp) to 1 (strongest); applied on Android 12 and newer. */
+    val blur: Float = 0f,
     val adaptColors: Boolean = false,
 )
 

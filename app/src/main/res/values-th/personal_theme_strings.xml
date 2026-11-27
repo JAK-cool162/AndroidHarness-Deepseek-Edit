@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"บทสนทนาของคุณ Canvas ของคุณ"</string>
     <string name="theme_canvas_preview_reply">"ทำตัวเหมือนอยู่บ้าน"</string>
     <string name="theme_canvas_color_area">"พื้นที่สี"</string>
+    <string name="theme_canvas_blur">เบลอพื้นหลัง</string>
+    <string name="theme_canvas_blur_hint">ทำให้รูปภาพหรือ GIF ด้านหลังแชทของคุณนุ่มนวลขึ้น</string>
+    <string name="theme_canvas_blur_unsupported">การเบลอต้องใช้ Android 12 ขึ้นไป</string>
 </resources>

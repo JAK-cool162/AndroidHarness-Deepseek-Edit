@@ -100,13 +100,11 @@ class LearnCatalogTest {
         assertNull(learnGuideAsset(Locale.forLanguageTag("sw-KE")))
     }
 
-    @Test fun hiddenGlassIsAbsentFromGuideSettingsSearchAndAssistantControls() {
-        assertFalse(FeatureAvailability.HARNESS_GLASS)
-        assertFalse(source.contains("glass", ignoreCase = true))
+    @Test fun glassIsInSettingsSearchAndAssistantControls() {
+        assertTrue(FeatureAvailability.HARNESS_GLASS)
         listOf("glass", "frosted", "refraction").forEach { term ->
-            assertTrue(matchingSettingsEntries(term, settingsTestStrings()).isEmpty())
-            assertTrue(AgentSettingsCatalog.search(term).isEmpty())
+            assertTrue(term, matchingSettingsEntries(term, settingsTestStrings()).isNotEmpty())
         }
-        listOf("frosted_glass", "liquid_glass", "glass_transparency").forEach { assertNull(AgentSettingsCatalog[it]) }
+        listOf("frosted_glass", "liquid_glass", "glass_transparency").forEach { assertNotNull(AgentSettingsCatalog[it]) }
     }
 }

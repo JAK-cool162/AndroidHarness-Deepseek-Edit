@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">你的对话，你的 Canvas。</string>
     <string name="theme_canvas_preview_reply">宾至如归。</string>
     <string name="theme_canvas_color_area">取色区域</string>
+    <string name="theme_canvas_blur">背景模糊</string>
+    <string name="theme_canvas_blur_hint">柔化聊天背后的图片或 GIF。</string>
+    <string name="theme_canvas_blur_unsupported">模糊效果需要 Android 12 或更高版本。</string>
 </resources>

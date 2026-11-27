@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"Ang iyong mga pag-uusap, ang iyong Canvas."</string>
     <string name="theme_canvas_preview_reply">"Gawin ang iyong sarili sa bahay."</string>
     <string name="theme_canvas_color_area">"Lugar ng kulay"</string>
+    <string name="theme_canvas_blur">Blur ng background</string>
+    <string name="theme_canvas_blur_hint">Palambutin ang larawan o GIF sa likod ng iyong mga chat.</string>
+    <string name="theme_canvas_blur_unsupported">Kailangan ng blur ang Android 12 o mas bago.</string>
 </resources>

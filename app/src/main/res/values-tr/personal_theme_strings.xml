@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"Konuşmalarınız, Kanvasınız."</string>
     <string name="theme_canvas_preview_reply">"Kendinizi evinizdeymiş gibi hissedin."</string>
     <string name="theme_canvas_color_area">"Renk alanı"</string>
+    <string name="theme_canvas_blur">Arka plan bulanıklığı</string>
+    <string name="theme_canvas_blur_hint">Sohbetlerinizin arkasındaki görseli veya GIF\'i yumuşatın.</string>
+    <string name="theme_canvas_blur_unsupported">Bulanıklık için Android 12 veya üstü gerekir.</string>
 </resources>

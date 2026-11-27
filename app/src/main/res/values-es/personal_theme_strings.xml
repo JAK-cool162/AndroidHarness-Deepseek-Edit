@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">Tus conversaciones, tu Canvas.</string>
     <string name="theme_canvas_preview_reply">Siéntete como en casa.</string>
     <string name="theme_canvas_color_area">Zona de color</string>
+    <string name="theme_canvas_blur">Desenfoque del fondo</string>
+    <string name="theme_canvas_blur_hint">Suaviza la imagen o el GIF detrás de tus chats.</string>
+    <string name="theme_canvas_blur_unsupported">El desenfoque requiere Android 12 o posterior.</string>
 </resources>

@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"Cuộc trò chuyện của bạn, Canvas của bạn."</string>
     <string name="theme_canvas_preview_reply">"Tự nhiên như ở nhà."</string>
     <string name="theme_canvas_color_area">"Vùng màu"</string>
+    <string name="theme_canvas_blur">Làm mờ nền</string>
+    <string name="theme_canvas_blur_hint">Làm dịu hình ảnh hoặc GIF phía sau các cuộc trò chuyện.</string>
+    <string name="theme_canvas_blur_unsupported">Làm mờ cần Android 12 trở lên.</string>
 </resources>

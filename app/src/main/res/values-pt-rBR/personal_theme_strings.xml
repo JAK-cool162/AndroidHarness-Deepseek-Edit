@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">Suas conversas, sua tela.</string>
     <string name="theme_canvas_preview_reply">Fique à vontade.</string>
     <string name="theme_canvas_color_area">Área de cor</string>
+    <string name="theme_canvas_blur">Desfoque do fundo</string>
+    <string name="theme_canvas_blur_hint">Suavize a imagem ou o GIF atrás das suas conversas.</string>
+    <string name="theme_canvas_blur_unsupported">O desfoque requer Android 12 ou mais recente.</string>
 </resources>

@@ -48,10 +48,13 @@ class HarnessCanvasStore(private val context: Context, private val settings: Set
                     Score.score(if (opaque.isEmpty()) emptyMap() else QuantizerCelebi.quantize(opaque, 64), desired = 1, filter = false).first().toLong() and 0xFFFFFFFF
                 } finally { if (sample !== bitmap) sample.recycle() }
                 val alpha = bitmap.hasAlpha()
-                val id = "canvas-${UUID.randomUUID()}.${if (alpha) "png" else "jpg"}"
+                val animated = animatedExtension(source)
+                val id = "canvas-${UUID.randomUUID()}.${animated ?: if (alpha) "png" else "jpg"}"
                 val saved = File(root, id)
                 output = saved
-                saved.outputStream().use { check(bitmap.compress(if (alpha) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG, 90, it)) }
+                // Animated images keep their original bytes so every frame plays; stills are re-encoded at a bounded size.
+                if (animated != null) source.copyTo(saved, overwrite = true)
+                else saved.outputStream().use { check(bitmap.compress(if (alpha) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG, 90, it)) }
                 withContext(NonCancellable) {
                     settings.updateHarnessCanvas { it.copy(imageId = id, seed = seed, enabled = true) }
                     output = null
@@ -92,7 +95,22 @@ class HarnessCanvasStore(private val context: Context, private val settings: Set
         return if (matrix.isIdentity) bitmap else Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true).also { if (it !== bitmap) bitmap.recycle() }
     }
 
+    /** @return "gif" or "webp" for an animated image Android 9+ can play, or null to store a still. */
+    private fun animatedExtension(source: File): String? {
+        if (Build.VERSION.SDK_INT < 28 || source.length() > MAX_ANIMATED_BYTES) return null
+        val head = ByteArray(minOf(source.length(), 4096L).toInt())
+        source.inputStream().use { input -> var read = 0; while (read < head.size) { val n = input.read(head, read, head.size - read); if (n < 0) break; read += n } }
+        val ascii = String(head, Charsets.ISO_8859_1)
+        return when {
+            ascii.startsWith("GIF8") -> "gif"
+            ascii.startsWith("RIFF") && ascii.startsWith("WEBP", 8) && ascii.contains("ANIM") -> "webp"
+            else -> null
+        }
+    }
+
     companion object {
+        /** Animated backgrounds are played from the original file, so they get a tighter limit than stills. */
+        private const val MAX_ANIMATED_BYTES = 16L * 1024 * 1024
         private val lock = Mutex()
         private val validId = canvasImageIdPattern
         fun directory(context: Context) = File(context.filesDir, "harness-canvas")

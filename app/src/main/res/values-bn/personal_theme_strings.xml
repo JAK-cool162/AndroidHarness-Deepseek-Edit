@@ -38,4 +38,7 @@
     <string name="theme_canvas_preview_message">"আপনার কথোপকথন, আপনার ক্যানভাস।"</string>
     <string name="theme_canvas_preview_reply">"বাড়িতে নিজেকে তৈরি করুন।"</string>
     <string name="theme_canvas_color_area">"রঙ এলাকা"</string>
+    <string name="theme_canvas_blur">পটভূমি ঝাপসা</string>
+    <string name="theme_canvas_blur_hint">আপনার চ্যাটের পিছনের ছবি বা GIF নরম করুন।</string>
+    <string name="theme_canvas_blur_unsupported">ঝাপসা করার জন্য Android 12 বা নতুন সংস্করণ প্রয়োজন।</string>
 </resources>

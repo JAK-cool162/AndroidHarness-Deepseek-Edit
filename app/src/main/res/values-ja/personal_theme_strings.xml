@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">あなたの会話、あなたの Canvas。</string>
     <string name="theme_canvas_preview_reply">どうぞごゆっくり。</string>
     <string name="theme_canvas_color_area">色の範囲</string>
+    <string name="theme_canvas_blur">背景のぼかし</string>
+    <string name="theme_canvas_blur_hint">チャットの背後の画像や GIF をぼかします。</string>
+    <string name="theme_canvas_blur_unsupported">ぼかしには Android 12 以降が必要です。</string>
 </resources>

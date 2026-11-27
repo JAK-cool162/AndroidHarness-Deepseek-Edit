@@ -37,4 +37,7 @@
     <string name="theme_canvas_preview_message">محادثاتك، مساحتك.</string>
     <string name="theme_canvas_preview_reply">كن كأنك في بيتك.</string>
     <string name="theme_canvas_color_area">منطقة اللون</string>
+    <string name="theme_canvas_blur">ضبابية الخلفية</string>
+    <string name="theme_canvas_blur_hint">اجعل الصورة أو صورة GIF خلف محادثاتك أنعم.</string>
+    <string name="theme_canvas_blur_unsupported">تتطلب الضبابية Android 12 أو أحدث.</string>
 </resources>
