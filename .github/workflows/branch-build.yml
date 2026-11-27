@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: branch-build-${{ github.ref }}
@@ -57,3 +57,13 @@ jobs:
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
+
+      - name: Publish APK to the branch's prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${GITHUB_REF_NAME//\//-}"
+          cp app/build/outputs/apk/debug/*.apk "AndroidHarness-DeepSeek-cache-debug.apk"
+          gh release delete "$tag" --yes --cleanup-tag || true
+          gh release create "$tag" AndroidHarness-DeepSeek-cache-debug.apk --prerelease --target "$GITHUB_SHA" \
+            --title "Debug APK: $GITHUB_REF_NAME" --notes "Debug build of $GITHUB_SHA from $GITHUB_REF_NAME."
