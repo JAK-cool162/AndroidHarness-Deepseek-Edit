@@ -28,6 +28,9 @@ val githubBuildProperties = Properties().apply {
 // Device Flow never embeds an OAuth client secret or auth backend.
 val githubClientId = githubBuildProperties.getProperty("GITHUB_CLIENT_ID", "")
 val distributionChannel = providers.gradleProperty("distribution").getOrElse("github")
+// -Pabis=arm64-v8a narrows a side-loaded build to the device's ABI.
+val buildAbis = providers.gradleProperty("abis").map { it.split(",") }
+    .getOrElse(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
 require(distributionChannel in setOf("github", "play")) { "distribution must be github or play" }
 require(githubClientId.matches(Regex("[A-Za-z0-9]*"))) { "Invalid GitHub OAuth Client ID" }
 val hasNdk: Boolean = run {
@@ -67,10 +70,7 @@ android {
         buildConfigField("String", "GITHUB_CLIENT_ID", "\"$githubClientId\"")
         buildConfigField("boolean", "PLAY_DISTRIBUTION", (distributionChannel == "play").toString())
         if (hasNdk) {
-            // -Pabis=arm64-v8a narrows a side-loaded build to the device's ABI.
-            val abis = providers.gradleProperty("abis").map { it.split(",") }
-                .getOrElse(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
-            ndk { abiFilters += abis }
+            ndk { abiFilters += buildAbis }
             externalNativeBuild {
                 cmake { arguments += listOf("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON", "-DHARNESS_GPU_OUTPUT=${layout.buildDirectory.dir("generated/gpuNative").get().asFile}") }
             }
@@ -276,16 +276,17 @@ abstract class PrepareGpuRuntime @Inject constructor(private val execOps: ExecOp
     @get:OutputDirectory abstract val assetDirectory: DirectoryProperty
     @get:OutputDirectory abstract val packageDirectory: DirectoryProperty
     @get:OutputDirectory abstract val featureDirectory: DirectoryProperty
+    @get:Input abstract val abis: ListProperty<String>
 
     @TaskAction fun prepare() {
         listOf(assetDirectory, packageDirectory, featureDirectory).forEach { it.get().asFile.deleteRecursively(); it.get().asFile.mkdirs() }
-        for (abi in listOf("armeabi-v7a", "x86")) {
+        for (abi in listOf("armeabi-v7a", "x86").filter { it in abis.get() }) {
             val stub = featureDirectory.file("$abi/libharness_gpu_unavailable.so").get().asFile
             stub.parentFile.mkdirs()
             nativeDirectory.file("$abi/libharness_gpu_unavailable.so").get().asFile.copyTo(stub, overwrite = true)
             execOps.exec { commandLine(stripTool.get().asFile, "--strip-unneeded", stub) }.assertNormalExitValue()
         }
-        for (abi in listOf("arm64-v8a", "x86_64")) {
+        for (abi in listOf("arm64-v8a", "x86_64").filter { it in abis.get() }) {
             val source = nativeDirectory.file("$abi/libggml-vulkan.so").get().asFile
             val library = featureDirectory.file("$abi/libggml-vulkan.so").get().asFile
             library.parentFile.mkdirs()
@@ -324,6 +325,7 @@ if (hasNdk) androidComponents.onVariants { variant ->
         nativeDirectory.set(layout.buildDirectory.dir("generated/gpuNative/${if (variant.buildType == "debug") "Debug" else "RelWithDebInfo"}"))
         providers.gradleProperty("gpuRuntimePackages").orNull?.let { externalPackages.set(file(it)) }
         stripTool.set(strip)
+        abis.set(buildAbis)
         assetDirectory.set(layout.buildDirectory.dir("generated/gpuDelivery/${variant.name}/assets"))
         packageDirectory.set(layout.buildDirectory.dir("outputs/gpuRuntime/${variant.name}"))
         featureDirectory.set(layout.buildDirectory.dir("generated/gpuDelivery/${variant.name}/jniLibs"))
