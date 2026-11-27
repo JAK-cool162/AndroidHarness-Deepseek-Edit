@@ -12,7 +12,8 @@ permissions:
 
 concurrency:
   group: branch-build-${{ github.ref }}
-  cancel-in-progress: true
+  # A new push waits for the running build instead of cancelling it.
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -30,6 +31,9 @@ jobs:
 
       - name: Set up Gradle (caching)
         uses: gradle/actions/setup-gradle@v6
+        with:
+          # Branch builds save the cache too (the default saves only on the default branch).
+          cache-read-only: false
 
       # Same toolchain the nightly build installs: the runner image does not
       # carry the pinned NDK, and AGP refuses to configure without it.
