@@ -9,8 +9,8 @@ class WorkspaceLayoutModeTest {
         for (width in listOf(360f, 800f, 1280f, 2560f)) assertFalse(useWorkspacePanes(WorkspaceLayoutMode.PHONE, width, 1f))
     }
     @Test fun autoAdaptsToWindowWidthAndDesktopFitsLandscapePhones() {
-        assertFalse(useWorkspacePanes(WorkspaceLayoutMode.AUTO, 839f, 1f))
-        assertTrue(useWorkspacePanes(WorkspaceLayoutMode.AUTO, 840f, 1f))
+        assertFalse(useWorkspacePanes(WorkspaceLayoutMode.AUTO, 719f, 1f))
+        assertTrue(useWorkspacePanes(WorkspaceLayoutMode.AUTO, 720f, 1f))
         assertFalse(useWorkspacePanes(WorkspaceLayoutMode.DESKTOP, 360f, 1f))
         assertFalse(useWorkspacePanes(WorkspaceLayoutMode.DESKTOP, 719f, 1f))
         assertTrue(useWorkspacePanes(WorkspaceLayoutMode.DESKTOP, 720f, 1f))

@@ -31,8 +31,8 @@ data class AppSettings(
     val subagentProviderId: String? = null,
     val subagentModel: String? = null,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
-    val dynamicColor: Boolean = true,
-    val colorPalette: ThemePalette = ThemePalette.BLUE,
+    val dynamicColor: Boolean = false,
+    val colorPalette: ThemePalette = ThemePalette.DEEPSEEK,
     val customPalettes: List<CustomThemePalette> = emptyList(),
     /** Settings sections the user built for themselves, shown on the settings home. */
     val customSections: List<CustomSettingsSection> = emptyList(),
@@ -497,7 +497,7 @@ class SettingsRepository(private val context: Context) {
             themeMode = prefs[Keys.THEME_MODE]
                 ?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() }
                 ?: ThemeMode.SYSTEM,
-            dynamicColor = prefs[Keys.DYNAMIC_COLOR] ?: true,
+            dynamicColor = prefs[Keys.DYNAMIC_COLOR] ?: false,
             colorPalette = ThemePalette.fromStored(prefs[Keys.COLOR_PALETTE]),
             customPalettes = runCatching { kotlinx.serialization.json.Json.decodeFromString<List<CustomThemePalette>>(prefs[Keys.CUSTOM_PALETTES] ?: "[]") }.getOrDefault(emptyList()),
             customSections = CustomSettingsSections.decode(prefs[Keys.CUSTOM_SECTIONS]),

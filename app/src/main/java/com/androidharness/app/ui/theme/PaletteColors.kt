@@ -8,6 +8,37 @@ import com.androidharness.app.data.ThemePalette
  * Full light/dark roles are stored here so choosing a palette needs no runtime dependency.
  */
 private val paletteSchemes = mapOf(
+    // DeepSeek Harness's own design tokens (ui-theme design-platform.css): flat neutral
+    // surfaces with the DeepSeek blue accent, so the app matches the desktop harness.
+    // The light primary is deepseek-500 darkened just enough for white text to reach 4.5:1.
+    ThemePalette.DEEPSEEK to Pair(
+        lightColorScheme(
+            primary = Color(0xFF3D70E0), onPrimary = Color(0xFFFFFFFF), primaryContainer = Color(0xFFE4EDFD),
+            onPrimaryContainer = Color(0xFF283142), inversePrimary = Color(0xFF7AAAFF), secondary = Color(0xFF61666B),
+            onSecondary = Color(0xFFFFFFFF), secondaryContainer = Color(0xFFEBEEF2), onSecondaryContainer = Color(0xFF0F1115),
+            tertiary = Color(0xFF4868B2), onTertiary = Color(0xFFFFFFFF), tertiaryContainer = Color(0xFFD3E2FF),
+            onTertiaryContainer = Color(0xFF283142), background = Color(0xFFFFFFFF), onBackground = Color(0xFF0F1115),
+            surface = Color(0xFFFFFFFF), onSurface = Color(0xFF0F1115), surfaceVariant = Color(0xFFF5F6F7),
+            onSurfaceVariant = Color(0xFF61666B), surfaceTint = Color(0xFFFFFFFF), inverseSurface = Color(0xFF151517),
+            inverseOnSurface = Color(0xFFF9FAFB), outline = Color(0xFF81858C), outlineVariant = Color(0xFFCFD3D6),
+            scrim = Color(0xFF000000), surfaceBright = Color(0xFFFFFFFF), surfaceDim = Color(0xFFEBEEF2),
+            surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFF9FAFB), surfaceContainer = Color(0xFFF5F6F7),
+            surfaceContainerHigh = Color(0xFFEBEEF2), surfaceContainerHighest = Color(0xFFE9ECF2),
+        ),
+        darkColorScheme(
+            primary = Color(0xFF7AAAFF), onPrimary = Color(0xFF283142), primaryContainer = Color(0xFF34415B),
+            onPrimaryContainer = Color(0xFFD3E2FF), inversePrimary = Color(0xFF3D70E0), secondary = Color(0xFFCFD3D6),
+            onSecondary = Color(0xFF232324), secondaryContainer = Color(0xFF353638), onSecondaryContainer = Color(0xFFF9FAFB),
+            tertiary = Color(0xFFB7C8FE), onTertiary = Color(0xFF283142), tertiaryContainer = Color(0xFF4868B2),
+            onTertiaryContainer = Color(0xFFE4EDFD), background = Color(0xFF151517), onBackground = Color(0xFFF9FAFB),
+            surface = Color(0xFF151517), onSurface = Color(0xFFF9FAFB), surfaceVariant = Color(0xFF2C2C2E),
+            onSurfaceVariant = Color(0xFFCFD3D6), surfaceTint = Color(0xFF151517), inverseSurface = Color(0xFFF9FAFB),
+            inverseOnSurface = Color(0xFF151517), outline = Color(0xFF81858C), outlineVariant = Color(0xFF353638),
+            scrim = Color(0xFF000000), surfaceBright = Color(0xFF353638), surfaceDim = Color(0xFF151517),
+            surfaceContainerLowest = Color(0xFF0F1115), surfaceContainerLow = Color(0xFF1B1B1D), surfaceContainer = Color(0xFF232324),
+            surfaceContainerHigh = Color(0xFF2C2C2E), surfaceContainerHighest = Color(0xFF353638),
+        ),
+    ),
     // Seed #0077B6
     ThemePalette.OCEAN to Pair(
         lightColorScheme(

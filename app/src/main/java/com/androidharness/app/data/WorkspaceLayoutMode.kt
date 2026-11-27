@@ -18,11 +18,14 @@ enum class WorkspaceLayoutMode(val label: String, val description: String) {
     }
 }
 
-/** Width comes from the app window, not the device's orientation or pixel resolution. */
+/**
+ * Width comes from the app window, not the device's orientation or pixel resolution.
+ * AUTO starts at 720dp, so a phone turned sideways gets the desktop panes and terminal panel.
+ */
 fun useWorkspacePanes(mode: WorkspaceLayoutMode, widthDp: Float, fontScale: Float): Boolean {
     val minimum = when (mode) {
         WorkspaceLayoutMode.PHONE -> return false
-        WorkspaceLayoutMode.AUTO -> 840f
+        WorkspaceLayoutMode.AUTO -> 720f
         WorkspaceLayoutMode.DESKTOP -> 720f
     }
     return widthDp >= minimum * fontScale.coerceAtLeast(1f)

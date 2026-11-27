@@ -123,6 +123,7 @@ internal fun PaletteSwatch(scheme: ColorScheme, modifier: Modifier = Modifier) {
 }
 
 internal fun ThemePalette.labelRes(): Int = when (this) {
+    ThemePalette.DEEPSEEK -> R.string.theme_palette_deepseek
     ThemePalette.BLUE -> R.string.theme_palette_blue
     ThemePalette.OCEAN -> R.string.theme_palette_ocean
     ThemePalette.INDIGO -> R.string.theme_palette_indigo

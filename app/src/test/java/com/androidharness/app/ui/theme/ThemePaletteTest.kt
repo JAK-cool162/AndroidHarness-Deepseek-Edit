@@ -43,9 +43,10 @@ class ThemePaletteTest {
         }
     }
 
-    @Test fun `old settings retain their defaults and new palette survives portable backup`() {
-        assertEquals(ThemePalette.BLUE, Json.decodeFromString<AppSettings>("{}").colorPalette)
-        assertEquals(ThemePalette.BLUE, ThemePalette.fromStored("future-palette"))
+    @Test fun `settings default to the DeepSeek palette and a chosen palette survives portable backup`() {
+        assertEquals(ThemePalette.DEEPSEEK, Json.decodeFromString<AppSettings>("{}").colorPalette)
+        assertFalse(Json.decodeFromString<AppSettings>("{}").dynamicColor)
+        assertEquals(ThemePalette.DEEPSEEK, ThemePalette.fromStored("future-palette"))
         val settings = AppSettings(colorPalette = ThemePalette.ROSE, dynamicColor = false)
         assertEquals(settings, Json.decodeFromString<AppSettings>(Json.encodeToString(settings)))
     }
