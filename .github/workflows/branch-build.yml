@@ -1,4 +1,4 @@
-# Builds claude/** branches: unit tests, then a debug APK uploaded as an artifact.
+# Builds claude/** branches: unit tests, then an arm64 release APK published as a prerelease.
 name: Branch build
 
 on:
@@ -49,21 +49,21 @@ jobs:
           name: pr-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
 
-      - name: Build debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+      - name: Build release APK (arm64, shrunk)
+        run: ./gradlew :app:assembleRelease -Pabis=arm64-v8a -PappIdSuffix=.deepseek --no-daemon --stacktrace
 
-      - name: Upload debug APK
+      - name: Upload release APK
         uses: actions/upload-artifact@v7
         with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: release-apk
+          path: app/build/outputs/apk/release/*.apk
 
       - name: Publish APK to the branch's prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="build-${GITHUB_REF_NAME//\//-}"
-          cp app/build/outputs/apk/debug/*.apk "AndroidHarness-DeepSeek-cache-debug.apk"
+          cp app/build/outputs/apk/release/*.apk "AndroidHarness-DeepSeek-cache.apk"
           gh release delete "$tag" --yes --cleanup-tag || true
-          gh release create "$tag" AndroidHarness-DeepSeek-cache-debug.apk --prerelease --target "$GITHUB_SHA" \
-            --title "Debug APK: $GITHUB_REF_NAME" --notes "Debug build of $GITHUB_SHA from $GITHUB_REF_NAME."
+          gh release create "$tag" AndroidHarness-DeepSeek-cache.apk --prerelease --target "$GITHUB_SHA" \
+            --title "APK: $GITHUB_REF_NAME" --notes "arm64 release build of $GITHUB_SHA from $GITHUB_REF_NAME."

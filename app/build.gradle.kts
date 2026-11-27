@@ -67,7 +67,10 @@ android {
         buildConfigField("String", "GITHUB_CLIENT_ID", "\"$githubClientId\"")
         buildConfigField("boolean", "PLAY_DISTRIBUTION", (distributionChannel == "play").toString())
         if (hasNdk) {
-            ndk { abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64") }
+            // -Pabis=arm64-v8a narrows a side-loaded build to the device's ABI.
+            val abis = providers.gradleProperty("abis").map { it.split(",") }
+                .getOrElse(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+            ndk { abiFilters += abis }
             externalNativeBuild {
                 cmake { arguments += listOf("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON", "-DHARNESS_GPU_OUTPUT=${layout.buildDirectory.dir("generated/gpuNative").get().asFile}") }
             }
@@ -98,6 +101,8 @@ android {
             // APK installs without a release keystore. Swap to a dedicated
             // signing config before any public/Play distribution.
             signingConfig = signingConfigs.getByName("debug")
+            // -PappIdSuffix=.x installs a side-loaded build next to the store app.
+            providers.gradleProperty("appIdSuffix").orNull?.let { applicationIdSuffix = it }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
