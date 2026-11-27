@@ -12,9 +12,9 @@ class DeviceSupportTest {
         matchingSettingsEntries(query, text).firstOrNull { it.minSdk == minSdk }
 
     @Test
-    fun `unreleased glass controls stay hidden at every Android version`() {
-        assertTrue(matchingSettingsEntries("liquid glass", text).isEmpty())
-        assertTrue(matchingSettingsEntries("frosted glass", text).isEmpty())
+    fun `glass controls are findable in settings search`() {
+        assertTrue(matchingSettingsEntries("liquid glass", text).isNotEmpty())
+        assertTrue(matchingSettingsEntries("frosted glass", text).isNotEmpty())
     }
 
     @Test

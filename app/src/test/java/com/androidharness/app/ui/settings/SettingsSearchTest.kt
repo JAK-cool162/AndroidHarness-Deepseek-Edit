@@ -47,7 +47,7 @@ class SettingsSearchTest {
     }
 
     @Test fun `exact matches never pull in near misses`() {
-        assertTrue(matchingSettingsEntries("glass", english).isEmpty())
+        assertTrue(matchingSettingsEntries("glass", english).all { it.anchor == R.string.glass_title })
         assertTrue(matchingSettingsEntries("theme", english).none { it.page == SettingsPage.TELEGRAM })
     }
 

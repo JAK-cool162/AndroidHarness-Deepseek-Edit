@@ -82,13 +82,12 @@ class AppSettingsToolsTest {
         assertEquals("VOICE", plan.todos.single().page)
     }
 
-    @Test fun hiddenGlassCannotBeEnabledThroughAssistantSettings() {
-        val hidden = defaults.copy(harnessLiquidGlass = true, harnessGlassEnabled = true)
-        val plan = tool().plan(args("""{"changes":[{"key":"liquid_glass","value":"on"},{"key":"frosted_glass","value":"on"}]}"""), hidden)
-        assertTrue(plan.changes.isEmpty())
-        assertEquals(2, plan.errors.size)
-        assertNull(AgentSettingsCatalog["liquid_glass"])
-        assertNull(AgentSettingsCatalog["glass_transparency"])
+    @Test fun glassCanBeEnabledThroughAssistantSettings() {
+        val plan = tool().plan(args("""{"changes":[{"key":"frosted_glass","value":"on"}]}"""), defaults)
+        assertTrue(plan.errors.isEmpty())
+        assertEquals(1, plan.changes.size)
+        assertNotNull(AgentSettingsCatalog["liquid_glass"])
+        assertNotNull(AgentSettingsCatalog["glass_transparency"])
     }
 
     @Test fun paletteCreationIsValidated() {
