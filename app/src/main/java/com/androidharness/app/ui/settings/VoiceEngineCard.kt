@@ -143,7 +143,7 @@ internal fun VoiceListeningCard(
             item {
                 VoiceEngineHeader(
                     icon = Icons.Rounded.Mic,
-                    shape = MaterialShapes.Cookie6Sided.toShape(),
+                    shape = MaterialShapes.Circle.toShape(),
                     turned = !engine.onPhone,
                     title = stringResource(R.string.settings_voice_hear_title),
                     subtitle = stringResource(R.string.settings_voice_hear_desc),
@@ -220,7 +220,7 @@ internal fun VoiceSpeakingCard(
             item {
                 VoiceEngineHeader(
                     icon = Icons.Rounded.VolumeUp,
-                    shape = MaterialShapes.Sunny.toShape(),
+                    shape = MaterialShapes.Circle.toShape(),
                     turned = !engine.onPhone,
                     title = stringResource(R.string.settings_voice_speak_title),
                     subtitle = stringResource(R.string.settings_voice_speak_desc),

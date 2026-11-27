@@ -97,7 +97,7 @@ internal fun MemoryGroupHeader(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (selecting) TriStateCheckbox(state = selection, onClick = null)
-        Box(Modifier.size(36.dp).background(color.copy(alpha = .22f), MaterialShapes.Cookie9Sided.toShape()), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(36.dp).background(color.copy(alpha = .22f), MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
             Icon(Icons.Rounded.Folder, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
         }
         Text(name, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -121,7 +121,7 @@ internal fun MemoryMapEntry(onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Box(Modifier.size(40.dp).background(scheme.primary, MaterialShapes.Cookie9Sided.toShape()), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(40.dp).background(scheme.primary, MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                 Icon(Icons.Rounded.Hub, contentDescription = null, tint = scheme.onPrimary, modifier = Modifier.size(22.dp))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {

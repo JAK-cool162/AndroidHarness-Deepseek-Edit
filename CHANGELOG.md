@@ -4,6 +4,7 @@
 
 ### Changed
 
+- **DeepSeek Harness look beyond colors**: text uses the system sans-serif font instead of Google Sans Flex, decorative cookie, clover and flower badges are plain circles, and the new chat screen shows the DeepSeek whale without the support banner.
 - **Sign in with GitHub works without a Client ID**: in builds without an OAuth Client ID, the button opens GitHub's new-token form with the name and the repo (and, when allowed, workflow) scopes filled in, then shows the field to paste the token.
 - **Animated and blurred backgrounds, and glass**: Harness Canvas plays animated GIF and WebP backgrounds on Android 9 and newer (up to 16 MB, kept as the original file) and has a Background blur slider on Android 12 and newer. The frosted and liquid glass appearance options are turned on in Appearance settings.
 - **DeepSeek look by default**: a new DeepSeek palette uses DeepSeek Harness's own design colors, white or near-black flat surfaces with the DeepSeek blue accent, and is the default instead of wallpaper colors. Other palettes and wallpaper colors stay available in Appearance.

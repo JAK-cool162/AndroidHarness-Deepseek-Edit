@@ -371,7 +371,7 @@ private fun applyDebugSettings(
 @Composable
 private fun ConsoleBadge(size: Dp) {
     val scheme = MaterialTheme.colorScheme
-    Box(Modifier.size(size).background(scheme.primaryContainer, MaterialShapes.Cookie9Sided.toShape()),
+    Box(Modifier.size(size).background(scheme.primaryContainer, MaterialShapes.Circle.toShape()),
         contentAlignment = Alignment.Center) {
         Icon(Icons.Rounded.BugReport, null, tint = scheme.onPrimaryContainer, modifier = Modifier.size(size / 2))
     }
@@ -489,7 +489,7 @@ private fun EmptyState(title: String, body: String) {
     val scheme = MaterialTheme.colorScheme
     Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 32.dp), horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Box(Modifier.size(88.dp).background(scheme.surfaceContainerHigh, MaterialShapes.Cookie9Sided.toShape()),
+        Box(Modifier.size(88.dp).background(scheme.surfaceContainerHigh, MaterialShapes.Circle.toShape()),
             contentAlignment = Alignment.Center) {
             Icon(Icons.Rounded.BugReport, null, tint = scheme.onSurfaceVariant, modifier = Modifier.size(36.dp))
         }
@@ -579,8 +579,8 @@ internal fun StatusBadge(trace: DebugTrace, size: Dp) {
     val broken = trace.error != null || (status != null && status >= 500)
     val refused = !broken && trace.failed
     val shape = when {
-        broken -> MaterialShapes.Sunny.toShape()
-        refused -> MaterialShapes.Cookie9Sided.toShape()
+        broken -> MaterialShapes.Circle.toShape()
+        refused -> MaterialShapes.Circle.toShape()
         else -> CircleShape
     }
     val (color, content) = when {

@@ -115,7 +115,7 @@ internal fun AssistantSetupSection(
         SettingsPanel(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Box(Modifier.size(44.dp).background(badge, MaterialShapes.Cookie9Sided.toShape()), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(44.dp).background(badge, MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                         Icon(if (active) Icons.Rounded.CheckCircle else Icons.Rounded.TouchApp, null, Modifier.size(22.dp), tint = glyph)
                     }
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {

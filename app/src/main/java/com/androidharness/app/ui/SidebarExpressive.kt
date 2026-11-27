@@ -195,7 +195,7 @@ internal fun SpinningCookie(color: Color, modifier: Modifier = Modifier, size: D
     val spin by rememberInfiniteTransition(label = "cookie").animateFloat(
         0f, 360f, infiniteRepeatable(tween(2400, easing = LinearEasing)), label = "cookie spin",
     )
-    Box(modifier.size(size).graphicsLayer { rotationZ = spin }.background(color, MaterialShapes.Cookie9Sided.toShape()))
+    Box(modifier.size(size).graphicsLayer { rotationZ = spin }.background(color, MaterialShapes.Circle.toShape()))
 }
 
 /** Tonal tile for the sidebar tool grid; squishes on press and lights up when it is the open screen. */
@@ -230,7 +230,7 @@ internal fun SidebarToolTile(
         Box(
             Modifier.size(30.dp).background(
                 if (selected) scheme.primary else scheme.surfaceContainerLow,
-                MaterialShapes.Cookie6Sided.toShape(),
+                MaterialShapes.Circle.toShape(),
             ),
             contentAlignment = Alignment.Center,
         ) {

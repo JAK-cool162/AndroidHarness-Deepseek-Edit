@@ -91,7 +91,7 @@ private fun ChoiceMark(checked: Boolean, multi: Boolean, enabled: Boolean) {
             Modifier
                 .size(26.dp)
                 .graphicsLayer { scaleX = fill; scaleY = fill; rotationZ = (1f - fill) * -90f }
-                .background(scheme.primary, if (multi) MaterialShapes.Square.toShape() else MaterialShapes.Cookie6Sided.toShape()),
+                .background(scheme.primary, if (multi) MaterialShapes.Square.toShape() else MaterialShapes.Circle.toShape()),
             contentAlignment = Alignment.Center,
         ) {
             Icon(Icons.Filled.Check, null, Modifier.size(16.dp), tint = scheme.onPrimary)

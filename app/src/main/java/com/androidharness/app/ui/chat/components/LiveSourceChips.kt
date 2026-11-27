@@ -216,8 +216,8 @@ private fun SourceChip(source: ChatActivityPresentation.Source, onOpenUrl: (Stri
 @Composable
 private fun siteBadge(host: String): Pair<androidx.compose.ui.graphics.Shape, Color> {
     val scheme = MaterialTheme.colorScheme
-    val shapes = listOf(MaterialShapes.Cookie6Sided, MaterialShapes.Clover4Leaf, MaterialShapes.Sunny,
-        MaterialShapes.Cookie9Sided, MaterialShapes.Puffy)
+    val shapes = listOf(MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+        MaterialShapes.Circle, MaterialShapes.Circle)
     val colors = listOf(scheme.primary, scheme.tertiary, scheme.secondary)
     val hash = host.hashCode() and Int.MAX_VALUE
     return shapes[hash % shapes.size].toShape() to colors[(hash / shapes.size) % colors.size]

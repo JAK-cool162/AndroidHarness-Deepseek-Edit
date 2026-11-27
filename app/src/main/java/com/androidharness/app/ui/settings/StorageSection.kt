@@ -330,11 +330,11 @@ private fun CategoryBadge(category: StorageCategory) {
     val shape = when (category) {
         StorageCategory.APP_DATA -> MaterialShapes.Square
         StorageCategory.PLUGINS -> MaterialShapes.Pill
-        StorageCategory.SKILLS -> MaterialShapes.Cookie9Sided
-        StorageCategory.WORKSPACES -> MaterialShapes.Arch
-        StorageCategory.LINUX_PACKAGES -> MaterialShapes.Cookie6Sided
-        StorageCategory.LOCAL_MODELS -> MaterialShapes.Clover4Leaf
-        StorageCategory.CACHES -> MaterialShapes.Sunny
+        StorageCategory.SKILLS -> MaterialShapes.Circle
+        StorageCategory.WORKSPACES -> MaterialShapes.Circle
+        StorageCategory.LINUX_PACKAGES -> MaterialShapes.Circle
+        StorageCategory.LOCAL_MODELS -> MaterialShapes.Circle
+        StorageCategory.CACHES -> MaterialShapes.Circle
     }
     Surface(Modifier.size(44.dp), shape = shape.toShape(), color = scheme.secondaryContainer, contentColor = scheme.onSecondaryContainer) {
         Box(contentAlignment = Alignment.Center) { Icon(storageCategoryIcon(category), null, Modifier.size(22.dp)) }

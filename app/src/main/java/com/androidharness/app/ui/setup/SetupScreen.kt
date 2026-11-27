@@ -384,7 +384,7 @@ private fun StoragePage(
     val sdk = android.os.Build.VERSION.SDK_INT
     Spacer(Modifier.height(16.dp))
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        MorphBadge(done = allFiles || media, icon = Icons.Rounded.SdStorage, size = 132.dp, seed = MaterialShapes.Cookie9Sided)
+        MorphBadge(done = allFiles || media, icon = Icons.Rounded.SdStorage, size = 132.dp, seed = MaterialShapes.Circle)
     }
     AnimatedContent(allFiles, transitionSpec = { fadeIn(tween(220)) togetherWith fadeOut(tween(120)) }, label = "storage title") { on ->
         Text(stringResource(if (on) R.string.setup_storage_granted else R.string.setup_storage_title),
@@ -400,14 +400,14 @@ private fun StoragePage(
             PowerCard(
                 icon = Icons.Rounded.Folder, title = stringResource(R.string.setup_storage_legacy),
                 status = stringResource(R.string.setup_storage_legacy_body),
-                done = allFiles, seed = MaterialShapes.Clover4Leaf,
+                done = allFiles, seed = MaterialShapes.Circle,
             ) { Button(onClick = onAllFiles) { Text(stringResource(R.string.ui_allow)) } }
         }
         allFilesAvailable -> Rise(1) {
             PowerCard(
                 icon = Icons.Rounded.Folder, title = stringResource(R.string.setup_storage_all_files),
                 status = stringResource(R.string.setup_storage_all_files_body),
-                done = allFiles, seed = MaterialShapes.Clover4Leaf,
+                done = allFiles, seed = MaterialShapes.Circle,
             ) { Button(onClick = onAllFiles) { Text(stringResource(R.string.ui_allow)) } }
         }
         else -> Rise(1) {
@@ -429,7 +429,7 @@ private fun StoragePage(
                 icon = Icons.Rounded.PhotoLibrary,
                 title = stringResource(if (modern) R.string.setup_storage_media else R.string.setup_storage_read),
                 status = stringResource(if (modern) R.string.setup_storage_media_body else R.string.setup_storage_read_body),
-                done = media, seed = MaterialShapes.Flower,
+                done = media, seed = MaterialShapes.Circle,
             ) {
                 if (allFilesAvailable) OutlinedButton(onClick = onMedia) { Text(stringResource(R.string.ui_allow)) }
                 else Button(onClick = onMedia) { Text(stringResource(R.string.ui_allow)) }
@@ -457,7 +457,7 @@ private fun RestorePage(
             done = chatsDone,
             action = stringResource(if (chatsDone) R.string.setup_restore_another else R.string.setup_restore_choose),
             onClick = onChats,
-            seed = MaterialShapes.Clover4Leaf,
+            seed = MaterialShapes.Circle,
         )
     }
     Rise(2) {
@@ -468,7 +468,7 @@ private fun RestorePage(
             done = settingsDone,
             action = stringResource(if (settingsDone) R.string.setup_restore_another else R.string.setup_restore_choose),
             onClick = onSettings,
-            seed = MaterialShapes.SoftBurst,
+            seed = MaterialShapes.Circle,
             error = settingsError != null,
         )
     }
@@ -494,7 +494,7 @@ private fun PowerUpsPage(
         PowerCard(
             icon = Icons.Rounded.Notifications, title = stringResource(R.string.ui_notifications),
             status = stringResource(if (notifGranted) R.string.ui_runs_report_progress_and_approvals else R.string.ui_progress_and_approvals_outside_the_app),
-            done = notifGranted, seed = MaterialShapes.Cookie6Sided,
+            done = notifGranted, seed = MaterialShapes.Circle,
         ) { Button(onClick = onNotifications) { Text(stringResource(R.string.ui_allow)) } }
     }
     Rise(2) {
@@ -506,7 +506,7 @@ private fun PowerUpsPage(
                 ShizukuState.RUNNING_NO_PERMISSION -> stringResource(R.string.ui_grant_access_to_unlock_adb_level_commands)
                 ShizukuState.GRANTED -> stringResource(if (shizukuReady) R.string.ui_connected_privileged_shell_ready else R.string.ui_granted_waiting_for_user_service)
             },
-            done = shizukuDone, seed = MaterialShapes.Pentagon,
+            done = shizukuDone, seed = MaterialShapes.Circle,
         ) {
             when (shizukuState) {
                 ShizukuState.RUNNING_NO_PERMISSION -> Button(onClick = onShizukuGrant) { Text(stringResource(R.string.settings_action_grant)) }
@@ -525,7 +525,7 @@ private fun PowerUpsPage(
                 is EnvState.Failed -> envState.message.take(80)
                 EnvState.NotInstalled -> stringResource(R.string.ui_optional_bash_git_python_pip_node_npm)
             },
-            done = envState is EnvState.Ready, seed = MaterialShapes.Cookie12Sided,
+            done = envState is EnvState.Ready, seed = MaterialShapes.Circle,
             progress = if (busy) ({ com.androidharness.app.ui.common.PackageInstallProgress(envState) }) else null,
         ) {
             if (envState is EnvState.NotInstalled || envState is EnvState.Failed) {
@@ -539,7 +539,7 @@ private fun PowerUpsPage(
         PowerCard(
             icon = Icons.Rounded.BatteryChargingFull, title = stringResource(R.string.settings_search_battery_title),
             status = stringResource(if (batteryExempt) R.string.ui_exempted_long_runs_survive_screen_off else R.string.ui_optional_keeps_long_runs_alive_on_aggressive),
-            done = batteryExempt, seed = MaterialShapes.Flower,
+            done = batteryExempt, seed = MaterialShapes.Circle,
         ) { OutlinedButton(onClick = onBattery) { Text(stringResource(R.string.settings_action_fix)) } }
     }
 }
@@ -550,7 +550,7 @@ private fun ReadyPage(chips: List<String>) {
     LaunchedEffect(Unit) { delay(180); landed = true }
     Spacer(Modifier.height(32.dp))
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        MorphBadge(done = landed, icon = Icons.Rounded.RocketLaunch, size = 156.dp, seed = MaterialShapes.Sunny)
+        MorphBadge(done = landed, icon = Icons.Rounded.RocketLaunch, size = 156.dp, seed = MaterialShapes.Circle)
     }
     Spacer(Modifier.height(8.dp))
     Rise(1) {
@@ -616,7 +616,7 @@ private fun HeroMark() {
         contentAlignment = Alignment.Center,
     ) {
         Box(Modifier.fillMaxSize().graphicsLayer { rotationZ = spin }
-            .background(MaterialTheme.colorScheme.primaryContainer, MaterialShapes.Cookie9Sided.toShape()))
+            .background(MaterialTheme.colorScheme.primaryContainer, MaterialShapes.Circle.toShape()))
         HarnessMark(size = 76.dp)
     }
 }
@@ -634,7 +634,7 @@ private fun ChoiceCard(icon: ImageVector, title: String, body: String, emphasize
         modifier = Modifier.fillMaxWidth().graphicsLayer { scaleX = scale; scaleY = scale },
     ) {
         Row(Modifier.padding(horizontal = 20.dp, vertical = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(52.dp).background(ink.copy(alpha = 0.14f), MaterialShapes.Cookie6Sided.toShape()), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(52.dp).background(ink.copy(alpha = 0.14f), MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                 Icon(icon, contentDescription = null, modifier = Modifier.size(28.dp))
             }
             Spacer(Modifier.width(16.dp))
@@ -810,9 +810,9 @@ private fun ShapeField(progress: Float) {
         val h = maxHeight
         data class Blob(val shape: RoundedPolygon, val x: Float, val y: Float, val size: Dp, val color: Color, val speed: Float)
         val blobs = listOf(
-            Blob(MaterialShapes.Cookie9Sided, 0.78f, -0.06f, 220.dp, scheme.primaryContainer.copy(alpha = 0.45f), 1f),
-            Blob(MaterialShapes.Flower, -0.18f, 0.38f, 180.dp, scheme.tertiaryContainer.copy(alpha = 0.35f), -0.7f),
-            Blob(MaterialShapes.SoftBurst, 0.62f, 0.82f, 200.dp, scheme.secondaryContainer.copy(alpha = 0.4f), 0.5f),
+            Blob(MaterialShapes.Circle, 0.78f, -0.06f, 220.dp, scheme.primaryContainer.copy(alpha = 0.45f), 1f),
+            Blob(MaterialShapes.Circle, -0.18f, 0.38f, 180.dp, scheme.tertiaryContainer.copy(alpha = 0.35f), -0.7f),
+            Blob(MaterialShapes.Circle, 0.62f, 0.82f, 200.dp, scheme.secondaryContainer.copy(alpha = 0.4f), 0.5f),
         )
         blobs.forEachIndexed { i, blob ->
             val drift = (if (i % 2 == 0) -1f else 1f) * shift * 48f

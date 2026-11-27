@@ -339,7 +339,7 @@ private fun VoiceStatusHero(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
-                Modifier.size(56.dp).graphicsLayer { rotationZ = turn }.background(badge, MaterialShapes.Cookie9Sided.toShape()),
+                Modifier.size(56.dp).graphicsLayer { rotationZ = turn }.background(badge, MaterialShapes.Circle.toShape()),
                 contentAlignment = Alignment.Center,
             ) {
                 AnimatedContent(

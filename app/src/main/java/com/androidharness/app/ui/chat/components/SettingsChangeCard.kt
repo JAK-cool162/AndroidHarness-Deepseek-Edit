@@ -185,7 +185,7 @@ private fun Header(receipt: SettingsReceipt, states: List<ChangeState>) {
         if (receipt.needsUser.isNotEmpty()) add(pluralStringResource(R.plurals.as_needs_you_count, receipt.needsUser.size, receipt.needsUser.size))
     }.joinToString(" · ")
     Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Surface(shape = MaterialShapes.Cookie9Sided.toShape(), color = scheme.primaryContainer, modifier = Modifier.size(40.dp)) {
+        Surface(shape = MaterialShapes.Circle.toShape(), color = scheme.primaryContainer, modifier = Modifier.size(40.dp)) {
             Box(contentAlignment = Alignment.Center) { Icon(Icons.Outlined.Tune, null, tint = scheme.onPrimaryContainer, modifier = Modifier.size(20.dp)) }
         }
         Column(Modifier.weight(1f)) {

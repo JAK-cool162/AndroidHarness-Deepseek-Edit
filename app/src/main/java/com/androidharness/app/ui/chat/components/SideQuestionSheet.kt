@@ -265,7 +265,7 @@ private fun SideQuestionBadge(running: Boolean) {
     val angle by spin.animateFloat(0f, 360f,
         infiniteRepeatable(tween(6_000, easing = LinearEasing), RepeatMode.Restart), label = "btw badge angle")
     val settle by animateFloatAsState(if (running) 1f else 0f, expressiveEffectsSpec(), label = "btw badge settle")
-    val shape = MaterialShapes.Cookie9Sided.toShape()
+    val shape = MaterialShapes.Circle.toShape()
     Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
         Box(
             Modifier.size(44.dp).graphicsLayer { rotationZ = angle * settle }

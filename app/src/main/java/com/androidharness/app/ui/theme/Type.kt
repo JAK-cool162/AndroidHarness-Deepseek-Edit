@@ -13,7 +13,8 @@ import com.androidharness.app.R
  * device (no Play Services / network dependency). It is a variable font, so asking
  * for Medium/Bold/SemiBold renders from its weight axis rather than fake-bold.
  */
-val GoogleSans = FontFamily(Font(R.font.google_sans_flex_variable))
+// DeepSeek edition: the platform sans-serif, as DeepSeek Harness uses the system UI font.
+val GoogleSans: FontFamily = FontFamily.SansSerif
 
 /**
  * Noto Sans Mono, the Google-family monospace, for code, paths, diffs and numbers.

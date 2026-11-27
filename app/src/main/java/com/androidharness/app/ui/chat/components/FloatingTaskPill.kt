@@ -460,7 +460,7 @@ private fun TaskRing(progress: Float, done: Int, total: Int, allDone: Boolean, j
                     (scaleOut(tween(140), targetScale = .6f) + fadeOut(tween(120)))
             }) { state ->
                 when (state) {
-                    RingFace.ALL_DONE -> Box(Modifier.size(RING).background(success, MaterialShapes.Cookie9Sided.toShape()),
+                    RingFace.ALL_DONE -> Box(Modifier.size(RING).background(success, MaterialShapes.Circle.toShape()),
                         contentAlignment = Alignment.Center) {
                         Icon(Icons.Filled.Check, null, Modifier.size(15.dp), tint = scheme.surface)
                     }

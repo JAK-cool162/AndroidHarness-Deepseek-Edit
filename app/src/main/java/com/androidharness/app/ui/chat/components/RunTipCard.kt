@@ -137,7 +137,7 @@ private fun RunTipCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Surface(shape = MaterialShapes.Cookie6Sided.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(28.dp)) {
+                    Surface(shape = MaterialShapes.Circle.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(28.dp)) {
                         Box(contentAlignment = Alignment.Center) {
                             Icon(Icons.Outlined.Lightbulb, null, tint = scheme.onTertiaryContainer, modifier = Modifier.size(16.dp))
                         }

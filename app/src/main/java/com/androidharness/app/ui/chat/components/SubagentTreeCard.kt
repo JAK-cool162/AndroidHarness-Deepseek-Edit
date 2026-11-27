@@ -80,7 +80,7 @@ internal fun SubagentTreeCard(runs: List<SubagentRun>, onOpen: (String) -> Unit,
                 // The root node: a cookie that turns a quarter while the tree is open.
                 val spin by animateFloatAsState(if (open) 90f else 0f, expressiveDefaultSpatialSpec(), label = "Subagent tree root")
                 Box(Modifier.size(ROOT).graphicsLayer { rotationZ = spin }
-                    .background(scheme.primaryContainer, MaterialShapes.Cookie6Sided.toShape()), contentAlignment = Alignment.Center) {
+                    .background(scheme.primaryContainer, MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Check, null, Modifier.size(16.dp).graphicsLayer { rotationZ = -spin }, tint = scheme.onPrimaryContainer)
                 }
                 Column(Modifier.weight(1f)) {

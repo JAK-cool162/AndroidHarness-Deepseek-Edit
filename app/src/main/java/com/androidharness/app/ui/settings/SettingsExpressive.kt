@@ -362,9 +362,9 @@ internal fun Switch(
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val heroPolygons = listOf(
-    MaterialShapes.Clover4Leaf, MaterialShapes.Cookie4Sided, MaterialShapes.Cookie6Sided, MaterialShapes.Flower,
-    MaterialShapes.Puffy, MaterialShapes.PuffyDiamond, MaterialShapes.ClamShell, MaterialShapes.Clover8Leaf,
-    MaterialShapes.Cookie7Sided, MaterialShapes.Bun, MaterialShapes.Ghostish, MaterialShapes.Oval,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
 )
 
 /**
@@ -375,10 +375,10 @@ private val heroPolygons = listOf(
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val settingsPolygons = listOf(
-    MaterialShapes.Clover4Leaf, MaterialShapes.Cookie4Sided, MaterialShapes.Cookie6Sided,
-    MaterialShapes.Cookie4Sided, MaterialShapes.Clover4Leaf, MaterialShapes.Cookie6Sided,
-    MaterialShapes.Cookie7Sided, MaterialShapes.Bun, MaterialShapes.Cookie7Sided,
-    MaterialShapes.Bun, MaterialShapes.Ghostish, MaterialShapes.Ghostish,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
+    MaterialShapes.Circle, MaterialShapes.Circle, MaterialShapes.Circle,
 )
 
 /** The shared hero silhouette, for badges outside the settings screen. */

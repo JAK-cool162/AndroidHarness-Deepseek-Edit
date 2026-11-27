@@ -74,7 +74,7 @@ fun TaskProgressCard(
             border = BorderStroke(1.dp, scheme.outlineVariant.copy(alpha = 0.5f))) {
             Column(Modifier.padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Surface(shape = MaterialShapes.Cookie6Sided.toShape(), modifier = Modifier.size(36.dp),
+                    Surface(shape = MaterialShapes.Circle.toShape(), modifier = Modifier.size(36.dp),
                         color = if (interrupted) scheme.errorContainer else scheme.secondaryContainer) {
                         Box(contentAlignment = Alignment.Center) {
                             Icon(if (interrupted) Icons.Default.ErrorOutline else Icons.Default.Pause, null, Modifier.size(20.dp),

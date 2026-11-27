@@ -294,7 +294,7 @@ private fun MemoryMap(
     val labelStyle = MaterialTheme.typography.labelMedium
     val hubStyle = MaterialTheme.typography.labelLarge
     val nodeLabels = remember(graph, labelStyle) { HashMap<Int, TextLayoutResult>() }
-    val hubShape = MaterialShapes.Cookie9Sided.toShape()
+    val hubShape = MaterialShapes.Circle.toShape()
     val signal = if (dark) Color.White else scheme.primary
     val ink = scheme.onSurface
     val labelBack = scheme.surfaceContainerHigh
@@ -526,7 +526,7 @@ private fun MemoryMapCard(
         color = scheme.surfaceContainerHigh, tonalElevation = 3.dp, shadowElevation = 6.dp) {
         Column(Modifier.heightIn(max = 380.dp).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Box(Modifier.size(30.dp).background(color.copy(alpha = .25f), MaterialShapes.Cookie9Sided.toShape()), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(30.dp).background(color.copy(alpha = .25f), MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                     Icon(Icons.Rounded.Folder, contentDescription = null, tint = color, modifier = Modifier.size(17.dp))
                 }
                 Text(folder, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)

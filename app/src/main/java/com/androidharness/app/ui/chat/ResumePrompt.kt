@@ -95,7 +95,7 @@ internal fun ResumePromptSheet(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Surface(shape = MaterialShapes.Cookie9Sided.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(52.dp)) {
+                    Surface(shape = MaterialShapes.Circle.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(52.dp)) {
                         Box(contentAlignment = Alignment.Center) {
                             Icon(Icons.Outlined.EditNote, null, tint = scheme.onTertiaryContainer, modifier = Modifier.size(26.dp))
                         }

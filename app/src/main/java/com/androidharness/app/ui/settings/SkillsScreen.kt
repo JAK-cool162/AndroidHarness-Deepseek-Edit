@@ -377,7 +377,7 @@ private fun SkillAvatar(skill: SkillMeta, size: Int = 42) {
         SkillSource.PROJECT -> scheme.onSecondaryContainer
         SkillSource.BUNDLED -> scheme.onTertiaryContainer
     }
-    Surface(Modifier.size(size.dp), shape = MaterialShapes.Cookie6Sided.toShape(), color = container, contentColor = content) {
+    Surface(Modifier.size(size.dp), shape = MaterialShapes.Circle.toShape(), color = container, contentColor = content) {
         Box(contentAlignment = Alignment.Center) {
             Text(skill.name.take(1).uppercase(), style = if (size > 48) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium)
         }
@@ -435,7 +435,7 @@ private fun SkillsEmpty(onClear: () -> Unit) = Surface(Modifier.fillMaxWidth().p
     Column(Modifier.padding(horizontal = 24.dp, vertical = 36.dp), horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-        Surface(Modifier.size(72.dp), shape = MaterialShapes.Puffy.toShape(), color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(Modifier.size(72.dp), shape = MaterialShapes.Circle.toShape(), color = MaterialTheme.colorScheme.tertiaryContainer) {
             Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.SearchOff, null, Modifier.size(32.dp)) }
         }
         Text(stringResource(R.string.sk_empty), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)

@@ -314,7 +314,7 @@ internal fun CustomSectionPage(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Box(Modifier.size(88.dp).background(scheme.tertiaryContainer, MaterialShapes.Cookie6Sided.toShape()), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(88.dp).background(scheme.tertiaryContainer, MaterialShapes.Circle.toShape()), contentAlignment = Alignment.Center) {
                         Icon(Icons.Rounded.Add, null, tint = scheme.onTertiaryContainer, modifier = Modifier.size(36.dp))
                     }
                     Text(stringResource(R.string.custom_sections_empty_title), style = MaterialTheme.typography.titleMedium)

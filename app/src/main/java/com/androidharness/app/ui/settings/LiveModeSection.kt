@@ -108,7 +108,7 @@ private fun LiveHeroToggle(enabled: Boolean, onToggle: (Boolean) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
-                Modifier.size(56.dp).graphicsLayer { rotationZ = turn }.background(badge, MaterialShapes.Cookie9Sided.toShape()),
+                Modifier.size(56.dp).graphicsLayer { rotationZ = turn }.background(badge, MaterialShapes.Circle.toShape()),
                 contentAlignment = Alignment.Center,
             ) { LiveGlyph(color = glyph, modifier = Modifier.graphicsLayer { rotationZ = -turn }, size = 26.dp) }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {

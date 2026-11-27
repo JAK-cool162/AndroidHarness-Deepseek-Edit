@@ -81,8 +81,8 @@ import com.androidharness.app.ui.theme.LocalStatusColors
 internal enum class WorkState { Idle, Running, Waiting, Done, Failed }
 
 private fun polygonFor(state: WorkState): RoundedPolygon = when (state) {
-    WorkState.Running -> MaterialShapes.Cookie9Sided
-    WorkState.Waiting -> MaterialShapes.Clover4Leaf
+    WorkState.Running -> MaterialShapes.Circle
+    WorkState.Waiting -> MaterialShapes.Circle
     WorkState.Done -> MaterialShapes.Circle
     WorkState.Failed -> MaterialShapes.Square
     WorkState.Idle -> MaterialShapes.Square

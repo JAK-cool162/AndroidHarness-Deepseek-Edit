@@ -289,7 +289,7 @@ private fun androidx.compose.foundation.layout.BoxScope.TerminalNotice(message: 
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Surface(shape = MaterialShapes.Cookie9Sided.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(40.dp)) {
+            Surface(shape = MaterialShapes.Circle.toShape(), color = scheme.tertiaryContainer, modifier = Modifier.size(40.dp)) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(Icons.Outlined.Refresh, null, Modifier.size(20.dp), tint = scheme.onTertiaryContainer)
                 }

@@ -95,7 +95,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.rememberCoroutineScope
-import com.androidharness.app.ui.common.HarnessLogoMorph
 import com.androidharness.app.ui.common.LogoMorph
 import kotlinx.coroutines.launch
 
@@ -184,8 +183,6 @@ internal fun ChatEmptyState(
                         Spacer(Modifier.height(16.dp))
                         agentSetup()
                     }
-                    Spacer(Modifier.height(12.dp))
-                    ChatSupportLinks()
                 }
             }
         }
@@ -285,7 +282,7 @@ private fun ChatHeroMark(icon: ImageVector?, morph: LogoMorph, visible: Boolean)
             delay(LOGO_LOOP_MS)
         }
     }
-    val shape = MaterialShapes.Cookie9Sided.toShape()
+    val shape = MaterialShapes.Circle.toShape()
     Box(
         Modifier
             .size(80.dp)
@@ -296,7 +293,7 @@ private fun ChatHeroMark(icon: ImageVector?, morph: LogoMorph, visible: Boolean)
                 this.alpha = alpha.coerceIn(0f, 1f)
             }
             .clip(shape)
-            .background(scheme.primaryContainer, shape)
+            .background(scheme.surfaceContainer, shape)
             .then(
                 if (showLogo) Modifier.clickable(
                     interactionSource = null,
@@ -316,12 +313,7 @@ private fun ChatHeroMark(icon: ImageVector?, morph: LogoMorph, visible: Boolean)
             // Counter-rotate so the glyph stays upright while the cookie turns.
             val upright = Modifier.graphicsLayer { rotationZ = -(spin + turn.value) }
             if (current == null) {
-                HarnessLogoMorph(
-                    morph = morph,
-                    color = scheme.onPrimaryContainer,
-                    progress = { progress.value },
-                    modifier = Modifier.size(40.dp).then(upright),
-                )
+                Icon(painterResource(R.drawable.ic_deepseek_whale), null, Modifier.size(48.dp).then(upright), tint = scheme.primary)
             } else {
                 Icon(current, null, Modifier.size(36.dp).then(upright), tint = scheme.onPrimaryContainer)
             }
@@ -339,10 +331,10 @@ private const val LOGO_LOOP_MS = 10_000L
 private fun starterAccent(index: Int): StarterAccent {
     val scheme = MaterialTheme.colorScheme
     val shape = when (index % 4) {
-        0 -> MaterialShapes.Cookie4Sided
-        1 -> MaterialShapes.Sunny
-        2 -> MaterialShapes.Clover4Leaf
-        else -> MaterialShapes.Cookie6Sided
+        0 -> MaterialShapes.Circle
+        1 -> MaterialShapes.Circle
+        2 -> MaterialShapes.Circle
+        else -> MaterialShapes.Circle
     }.toShape()
     return when (index % 3) {
         0 -> StarterAccent(scheme.primaryContainer, scheme.onPrimaryContainer, shape)

@@ -218,8 +218,8 @@ internal fun DiscoverControls(
 internal fun KindBadge(kind: String, modifier: Modifier = Modifier, size: Int = 48) {
     val scheme = MaterialTheme.colorScheme
     val (shape, container, content) = when (kind) {
-        "skill" -> Triple(MaterialShapes.Cookie9Sided, scheme.tertiaryContainer, scheme.onTertiaryContainer)
-        "mcp" -> Triple(MaterialShapes.Clover4Leaf, scheme.secondaryContainer, scheme.onSecondaryContainer)
+        "skill" -> Triple(MaterialShapes.Circle, scheme.tertiaryContainer, scheme.onTertiaryContainer)
+        "mcp" -> Triple(MaterialShapes.Circle, scheme.secondaryContainer, scheme.onSecondaryContainer)
         else -> Triple(MaterialShapes.Pill, scheme.primaryContainer, scheme.onPrimaryContainer)
     }
     Surface(modifier.size(size.dp), shape = shape.toShape(), color = container, contentColor = content) {
@@ -343,7 +343,7 @@ internal fun DiscoverEmpty(onClear: () -> Unit) = Surface(Modifier.fillMaxWidth(
     Column(Modifier.padding(horizontal = 24.dp, vertical = 36.dp), horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-        Surface(Modifier.size(72.dp), shape = MaterialShapes.Puffy.toShape(), color = MaterialTheme.colorScheme.secondaryContainer) {
+        Surface(Modifier.size(72.dp), shape = MaterialShapes.Circle.toShape(), color = MaterialTheme.colorScheme.secondaryContainer) {
             Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.SearchOff, null, Modifier.size(32.dp)) }
         }
         Text(stringResource(R.string.pm_no_matches), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)

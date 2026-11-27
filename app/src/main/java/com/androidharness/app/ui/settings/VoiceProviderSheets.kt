@@ -225,7 +225,7 @@ internal fun VoiceKeyPanel(
                 motion.defaultEffectsSpec(), label = "keyGlyph",
             )
             Box(
-                Modifier.size(48.dp).background(badge, MaterialShapes.Cookie6Sided.toShape()),
+                Modifier.size(48.dp).background(badge, MaterialShapes.Circle.toShape()),
                 contentAlignment = Alignment.Center,
             ) {
                 AnimatedContent(

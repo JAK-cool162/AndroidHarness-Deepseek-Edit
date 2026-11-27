@@ -507,7 +507,7 @@ private fun GoalHero(goal: GoalState, running: Boolean, stalled: Boolean) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
                     Box(Modifier.matchParentSize().graphicsLayer { rotationZ = spin }
-                        .background(tone.copy(alpha = 0.18f), MaterialShapes.Cookie9Sided.toShape()))
+                        .background(tone.copy(alpha = 0.18f), MaterialShapes.Circle.toShape()))
                     Icon(icon, null, Modifier.size(22.dp), tint = tone)
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -696,8 +696,8 @@ private fun OutcomePill(outcome: GoalCheck.Outcome) {
 private fun CheckNode(check: GoalCheck) {
     val scheme = MaterialTheme.colorScheme
     val (fill, content, shape) = when (check.outcome) {
-        GoalCheck.Outcome.MET -> Triple(scheme.primary, scheme.onPrimary, MaterialShapes.Cookie6Sided)
-        GoalCheck.Outcome.IMPROVE -> Triple(scheme.tertiary, scheme.onTertiary, MaterialShapes.Cookie6Sided)
+        GoalCheck.Outcome.MET -> Triple(scheme.primary, scheme.onPrimary, MaterialShapes.Circle)
+        GoalCheck.Outcome.IMPROVE -> Triple(scheme.tertiary, scheme.onTertiary, MaterialShapes.Circle)
         GoalCheck.Outcome.CONTINUE -> Triple(scheme.secondaryContainer, scheme.onSecondaryContainer, MaterialShapes.Circle)
         GoalCheck.Outcome.BLOCKED -> Triple(scheme.tertiaryContainer, scheme.onTertiaryContainer, MaterialShapes.Square)
         GoalCheck.Outcome.FAILED -> Triple(scheme.errorContainer, scheme.onErrorContainer, MaterialShapes.Square)
@@ -717,7 +717,7 @@ private fun NowNode() {
     val breathe by motion.animateFloat(0.86f, 1.06f, infiniteRepeatable(tween(900), RepeatMode.Reverse), label = "goal-now-scale")
     Box(Modifier.size(NODE), contentAlignment = Alignment.Center) {
         Box(Modifier.matchParentSize().graphicsLayer { rotationZ = spin; scaleX = breathe; scaleY = breathe }
-            .background(scheme.primary, MaterialShapes.Cookie9Sided.toShape()))
+            .background(scheme.primary, MaterialShapes.Circle.toShape()))
         Icon(Icons.Outlined.PlayArrow, null, Modifier.size(12.dp), tint = scheme.onPrimary)
     }
 }
@@ -856,7 +856,7 @@ private fun GoalImprovements(goal: GoalState, onSave: (List<String>, List<String
     Column(Modifier.fillMaxWidth().animateContentSize(expressiveDefaultSpatialSpec()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).clickable { open = !open }.padding(vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Box(Modifier.size(32.dp).background(scheme.tertiaryContainer, MaterialShapes.Cookie6Sided.toShape()),
+            Box(Modifier.size(32.dp).background(scheme.tertiaryContainer, MaterialShapes.Circle.toShape()),
                 contentAlignment = Alignment.Center) {
                 Icon(Icons.Outlined.AutoAwesome, null, Modifier.size(16.dp), tint = scheme.onTertiaryContainer)
             }

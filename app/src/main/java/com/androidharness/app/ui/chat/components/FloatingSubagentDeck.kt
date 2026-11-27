@@ -469,7 +469,7 @@ private fun SubagentChip(running: Boolean) {
                 val spin = rememberInfiniteTransition(label = "Subagent chip spin")
                     .animateFloat(0f, 360f, infiniteRepeatable(tween(7000, easing = LinearEasing)), label = "Subagent chip angle")
                 Box(Modifier.size(32.dp).graphicsLayer { rotationZ = spin.value }
-                    .background(scheme.primaryContainer, MaterialShapes.Cookie6Sided.toShape()))
+                    .background(scheme.primaryContainer, MaterialShapes.Circle.toShape()))
             } else {
                 Box(Modifier.size(32.dp).background(scheme.secondaryContainer, CircleShape))
             }

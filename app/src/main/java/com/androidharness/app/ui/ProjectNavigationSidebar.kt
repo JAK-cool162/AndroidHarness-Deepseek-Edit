@@ -183,7 +183,7 @@ internal fun ProjectNavigationSidebar(
                         .semantics { stateDescription = if (toolsOpen) uiContext.getString(R.string.ui_expanded) else uiContext.getString(R.string.ui_collapsed) }
                         .heightIn(min = 52.dp).padding(start = 10.dp, end = 14.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Box(Modifier.size(32.dp).background(scheme.primaryContainer, MaterialShapes.Cookie9Sided.toShape()),
+                        Box(Modifier.size(32.dp).background(scheme.primaryContainer, MaterialShapes.Circle.toShape()),
                             contentAlignment = Alignment.Center) {
                             Icon(Icons.Outlined.Widgets, null, Modifier.size(17.dp), tint = scheme.onPrimaryContainer)
                         }
@@ -552,7 +552,7 @@ private fun SidebarWorkspaceHeader(workspace: ProjectEntity?, count: Int, open: 
     val corner by animateDpAsState(if (open) 14.dp else 22.dp, expressiveSpatialSpec(), label = "workspace row shape")
     val fill by animateColorAsState(if (holdsSelection) scheme.secondaryContainer else if (open) scheme.surface else scheme.surfaceContainer,
         expressiveEffectsSpec(), label = "workspace row color")
-    val badgeShape = if (open) MaterialShapes.Cookie6Sided.toShape() else CircleShape
+    val badgeShape = if (open) MaterialShapes.Circle.toShape() else CircleShape
     val icon = when (workspace?.kind) {
         "APP" -> Icons.Outlined.PhoneAndroid
         "SSH" -> Icons.Outlined.Dns
