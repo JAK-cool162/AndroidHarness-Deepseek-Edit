@@ -68,12 +68,18 @@ internal fun GitHubIntegrationSection(container: AppContainer) {
                 }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_github_copy_open)) }
                 TextButton(onClick = { container.github.cancelSignIn() }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_chatgpt_cancel_signin)) }
             } else if (!patForm && !state.busy) {
-                Button(onClick = { message = null; container.github.startSignIn(workflow) },
-                    enabled = !working && container.github.clientId.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
+                Button(onClick = {
+                    message = null
+                    if (container.github.clientId.isNotBlank()) container.github.startSignIn(workflow)
+                    else {
+                        // Without an OAuth Client ID, sign in with a classic token: GitHub's form opens with the
+                        // name and scopes filled in, and the paste field is shown for when the user returns.
+                        patForm = true; token = ""
+                        open(classicTokenUrl(workflow))
+                    }
+                }, enabled = !working, modifier = Modifier.fillMaxWidth()) {
                     Text(if (state.login == null) uiContext.getString(R.string.ui_sign_in_with_github) else uiContext.getString(R.string.ui_sign_in_with_another_account))
                 }
-                if (container.github.clientId.isBlank()) Text(stringResource(R.string.settings_github_signin_unavailable),
-                    style = MaterialTheme.typography.bodySmall)
                 Row(Modifier.settingsAnchor(R.string.settings_github_allow_workflows)) {
                     Checkbox(workflow, onCheckedChange = { workflow = it })
                     Text(stringResource(R.string.settings_github_allow_workflows), modifier = Modifier.weight(1f).padding(top = 12.dp))
@@ -132,3 +138,7 @@ internal fun GitHubIntegrationSection(container: AppContainer) {
             }
         }) { Text(stringResource(R.string.settings_action_disconnect)) } }, dismissButton = { TextButton(onClick = { logout = false }) { Text(stringResource(R.string.settings_action_cancel)) } })
 }
+
+/** GitHub's new classic token form with this app's name and the scopes sign-in would request. */
+internal fun classicTokenUrl(workflow: Boolean): String =
+    "https://github.com/settings/tokens/new?description=AndroidHarness&scopes=" + if (workflow) "repo,workflow" else "repo"
