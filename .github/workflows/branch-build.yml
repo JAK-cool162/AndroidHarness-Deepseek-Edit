@@ -12,8 +12,7 @@ permissions:
 
 concurrency:
   group: branch-build-${{ github.ref }}
-  # A new push waits for the running build instead of cancelling it.
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -66,9 +65,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="build-${GITHUB_REF_NAME//\//-}"
+          # A tag name is used once: a deleted release's tag cannot be recreated.
+          tag="build-${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/release/*.apk "AndroidHarness-DeepSeek-cache.apk"
-          gh release delete "$tag" --yes --cleanup-tag || true
           gh release create "$tag" AndroidHarness-DeepSeek-cache.apk --prerelease --target "$GITHUB_SHA" \
             --title "APK: $GITHUB_REF_NAME" --notes "arm64 release build of $GITHUB_SHA from $GITHUB_REF_NAME."
 
@@ -85,7 +84,7 @@ jobs:
       - name: Download the branch APK
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release download "build-${GITHUB_REF_NAME//\//-}" --pattern AndroidHarness-DeepSeek-cache.apk
+        run: gh release download "build-${GITHUB_RUN_NUMBER}" --pattern AndroidHarness-DeepSeek-cache.apk
 
       - name: Enable KVM
         run: |
@@ -110,4 +109,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls screenshots || exit 0
-          gh release upload "build-${GITHUB_REF_NAME//\//-}" screenshots/* --clobber
+          gh release upload "build-${GITHUB_RUN_NUMBER}" screenshots/* --clobber
